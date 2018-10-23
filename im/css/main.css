@@ -201,7 +201,7 @@
 
 
 
-@font-face {font-family: "context-menu-icons"; font-style: normal; font-weight: normal; src: url("./contextMenu/font/context-menu-icons.eot?14l1a"); src: url("./contextMenu/font/context-menu-icons.eot?14l1a#iefix") format("embedded-opentype"), url("./contextMenu/font/context-menu-icons.woff2?14l1a") format("woff2"), url("./contextMenu/font/context-menu-icons.woff?14l1a") format("woff"), url("./contextMenu/font/context-menu-icons.ttf?14l1a") format("truetype");}
+@font-face {font-family: "context-menu-icons"; font-style: normal; font-weight: normal; src: url("./font/context-menu-icons.eot?14l1a"); src: url("./font/context-menu-icons.eot?14l1a#iefix") format("embedded-opentype"), url("./font/context-menu-icons.woff2?14l1a") format("woff2"), url("./font/context-menu-icons.woff?14l1a") format("woff"), url("./font/context-menu-icons.ttf?14l1a") format("truetype");}
 .context-menu-icon-delete:before {content: "\EA04";}
 .context-menu-icon::before {position: absolute; top: 50%; left: 0; width: 2em; font-family: "context-menu-icons"; font-size: 1em; font-style: normal; font-weight: normal; line-height: 1; color: #2980b9; text-align: center; -webkit-transform: translateY(-50%); -ms-transform: translateY(-50%); -o-transform: translateY(-50%); transform: translateY(-50%); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;}
 .context-menu-icon:hover::before{color: #fff;}

@@ -21,10 +21,7 @@ app.use(router.get("/login", async (ctx,next) => {
   ctx.response.type = 'html';
   ctx.response.body = await fs.readFile(path.join( __dirname, 'im/login.html'), 'utf8');
 }));
-app.use(router.get("/register", async (ctx,next) => {
-  ctx.response.type = 'html';
-  ctx.response.body = await fs.readFile(path.join( __dirname, 'im/register.html'), 'utf8');
-}));
+
 app.use(router.get("/kick", async (ctx,next) => {
   ctx.response.type = 'html';
   ctx.response.body = await fs.readFile(path.join( __dirname, 'im/kick.html'), 'utf8');

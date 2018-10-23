@@ -4,7 +4,7 @@ define([],
   var CONFIG = {
     host: localStorage.getItem('host') || '',
     // im所在的地址
-    homeLink: '/',
+    homeLink: '/main',
     // 登录地址
     loginLink: '/login',
     // 退出登录后的跳转地址

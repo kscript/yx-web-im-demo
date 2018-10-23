@@ -1,7 +1,9 @@
 define([
+    'cache',
     'config'
 ],
     function(
+        Cache,
         CONFIG
     ) {
 
@@ -685,7 +687,7 @@ function getAvatar(url) {
 
 //或者备注名或者昵称
 function getNick(account, cache) {
-    cache = cache || yunXin.cache;
+    cache = cache || Cache;
     var nick = cache.getFriendAlias(account), tmp = cache.getUserById(account);
     nick = nick || (tmp && tmp.nick ? tmp.nick : account)
     return nick;

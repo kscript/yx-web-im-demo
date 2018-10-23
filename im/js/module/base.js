@@ -13,7 +13,6 @@ requirejs([
   Util
 ){
   'use strict';
-  window.appUI = appUI;
   for(var key in emoji){
     if(emoji.hasOwnProperty(key)){
       window[key] = emoji[key];
@@ -28,5 +27,5 @@ requirejs([
    * 实例化
    * @see module/base/js
    */
-  var yunXin = new YX(userUID);
+  window.yunXin = new YX(userUID);
 })

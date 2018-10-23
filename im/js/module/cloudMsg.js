@@ -1,8 +1,10 @@
 requirejs([
-    'YX'
+    'YX',
+    'appUI'
 ],
 function(
-    YX
+    YX,
+    appUI
     ) {
 /*
 * 云记录
@@ -86,8 +88,9 @@ YX.fn.cbCloudMsg = function (error,obj) {
              }else{
                  $tip.html('<a class="j-loadMore">加载更多记录</a>')
              }
-            var msgHtml = appUI.buildCloudMsgUI(obj.msgs,this.cache)       
-            $(msgHtml).prependTo($node)
+            var msgHtml = appUI.buildCloudMsgUI(obj.msgs,this.cache)
+            $node.html(msgHtml)
+            // $(msgHtml).prependTo($node)
         }
     } else {
         console && console.error('获取历史消息失败')

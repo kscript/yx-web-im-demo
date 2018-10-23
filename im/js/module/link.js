@@ -1,12 +1,14 @@
 define([
   'SDK',
   'config',
-  'util'
+  'util',
+  'appUI'
 ],
   function(
     SDK,
     CONFIG,
-    Util
+    Util,
+    appUI
   ) {
 
 function SDKBridge(ctr, data) {
@@ -53,7 +55,7 @@ function SDKBridge(ctr, data) {
     onmsg: onMsg.bind(this),
     onroamingmsgs: saveMsgs.bind(this),
     onofflinemsgs: saveMsgs.bind(this),
-    onTeamMsgReceipt: onTeamMsgReceipt.bind(this),
+    // onTeamMsgReceipt: onTeamMsgReceipt.bind(this),
     //会话
     // 同步会话未读数
     syncSessionUnread: true,
@@ -162,6 +164,7 @@ function SDKBridge(ctr, data) {
     this.controller.loginPorts(loginPorts);
   }
   function onTeams(teams) {
+    return ;
     var teamlist = this.cache.getTeamlist();
     teamlist = this.nim.mergeTeams(teamlist, teams);
     teamlist = this.nim.cutTeams(teamlist, teams.invalid);
@@ -182,6 +185,14 @@ function SDKBridge(ctr, data) {
     that.subscribeMultiPortEvent(subscribeAccounts);
   }
   function onSessions(sessions) {
+    // 过滤掉群消息
+    var filterList = [];
+    for(var index = 0; index < sessions.length; index++){
+      sessions[index].scene === 'p2p' && filterList.push(sessions[index]);
+    }
+    if(!filterList.length) return ;
+    sessions = filterList;
+    
     var old = this.cache.getSessions();
     this.cache.setSessions(this.nim.mergeSessions(old, sessions));
     for (var i = 0; i < sessions.length; i++) {
@@ -209,6 +220,7 @@ function SDKBridge(ctr, data) {
   }
 
   function onUpdatesession(session) {
+    if(session.scene === 'team') return ;
     var id = session.id || '';
     var old = this.cache.getSessions();
     var msg = session.lastMsg;
@@ -217,6 +229,7 @@ function SDKBridge(ctr, data) {
   }
 
   function saveMsgs(msgs) {
+    if(msgs && msgs.scene === 'team') return ;
     msgs = msgs.msgs;
     this.cache.addMsgs(msgs);
     for (var i = 0; i < msgs.length; i++) {

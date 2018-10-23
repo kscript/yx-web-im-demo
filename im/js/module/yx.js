@@ -15,7 +15,7 @@ define([
     this.accid = accid;
     this.initModule();
     this.userUID = Util.readCookie('uid');
-    this.cache = new Cache();
+    this.cache = Cache;
     this.mysdk = new SDKBridge(this, this.cache);
     // this.myNetcall = new NetcallBridge(this);
     this.firstLoadSysMsg = true;
@@ -100,7 +100,7 @@ define([
       }
     }
     if (teamArray.length > 0) {
-      this.mysdk.getLocalTeams(teamArray, this.cbInitLocalTeamInfo.bind(this));
+      // this.mysdk.getLocalTeams(teamArray, this.cbInitLocalTeamInfo.bind(this));
     } else {
       this.lockTeam = false;
     }
@@ -199,7 +199,7 @@ define([
         this.$chatTitle.find('img').attr('src', 'images/normal.png');
         this.$nickName.text(account);
       }
-      this.getTeamMembers(account, function() {
+      this.getTeamMembers && this.getTeamMembers(account, function() {
         that.cache.isCurSessionTeamManager = that.cache.isTeamManager(
           this.userUID,
           that.crtSessionAccount

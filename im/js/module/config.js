@@ -14,7 +14,7 @@ define([],
 
     // 这里的 uid 和 token 只在测试时使用
     // 线上应在后台获取并设置为cookie
-    uid: localStorage.getItem('uid') || 'test2017',
+    uid: localStorage.getItem('uid') || 'kscript2018',
     token: localStorage.getItem('token') || '0f2ce291c76ecfc032e3432142f06fac',
     appkey: localStorage.getItem('appkey') || '45c6af3c98409b18a84451215d0bdd6e',
     url: '',

@@ -169,6 +169,7 @@ define([],
     }
   };
   Cache.prototype.addMsg = function(msg) {
+    console.log(msg);
     var user;
     if (msg.scene === 'team') {
       user = 'team-' + msg.to;
@@ -760,5 +761,5 @@ define([],
   Cache.prototype.getPersonSubscribes = function() {
     return this.personSubscribes;
   };
-  return Cache;
+  return new Cache;
 })

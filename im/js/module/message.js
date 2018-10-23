@@ -1,10 +1,12 @@
 define([
   'YX',
   'util',
+  'appUI',
   'jqueryContextMenu'
 ],function(
   YX,
-  Util
+  Util,
+  appUI
 ) {
 /*
 * @Author: 消息逻辑
@@ -111,7 +113,7 @@ YX.fn.doMsg = function(msg) {
     }
   } else {
     // 群消息处理
-    this.messageHandler(msg, updateContentUI);
+    // this.messageHandler(msg, updateContentUI);
   }
 };
 /*****************************************************************

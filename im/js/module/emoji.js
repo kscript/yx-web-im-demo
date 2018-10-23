@@ -137,7 +137,7 @@ define([], function() {
 				var span = document.createElement('span');
 				span.id = 'pic-emoji-'+key;	
 				span.style.width = this._lWidth+'px';
-				span.style.height= 'auto';
+				span.style.height= this._lWidth+'px';
 				var img = new Image();
 				img.src = this._imgpath +subtype+ '/'+ emojiList[key]['file'];
 				span.appendChild(img);
@@ -150,7 +150,7 @@ define([], function() {
 				var span = document.createElement('span');
 				span.id = 'pic-pinup-'+key;	
 				span.style.width = this._hWidth+'px';
-				span.style.height= 'auto';
+				span.style.height= this._hWidth+'px';
 				var img = new Image();
 				img.src = this._imgpath +subtype+ '/'+pinupList[key];
 				span.appendChild(img);

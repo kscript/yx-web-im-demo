@@ -8,10 +8,12 @@
 </head>
 <body>
   <script>
+    var host = 'https://kscript.github.io/yx-web-im-demo/im';
     localStorage.setItem('uid', 'kscript2018');
     localStorage.setItem('appkey', '45c6af3c98409b18a84451215d0bdd6e');
     localStorage.setItem('token', '0f2ce291c76ecfc032e3432142f06fac');
-    window.location.href = "./login";
+    localStorage.setItem('host', host);
+    window.location.href = host + "/login";
   </script>
 </body>
 </html>

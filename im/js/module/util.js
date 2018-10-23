@@ -715,17 +715,17 @@ function getAllAccount(obj) {
 // 主要是考虑到im有很大可能会被嵌入到页面内
 // 当im作为嵌入组件时, 修改函数以控制它们的行为
 function setLogout(){
-    window.location.href = CONFIG.logoutLink;
+    window.location.href = CONFIG.host + CONFIG.logoutLink;
 }
 function setLogin(type){
     if(type === 'kick'){
-        window.location.href = CONFIG.kickLink;
+        window.location.href = CONFIG.host + CONFIG.kickLink;
     }else{
-        window.location.href = CONFIG.loginLink;
+        window.location.href = CONFIG.host + CONFIG.loginLink;
     }
 }
 function setHome(){
-    window.location.href = CONFIG.homeLink;
+    window.location.href = CONFIG.host + CONFIG.homeLink;
 }
 return {
     setCookie: setCookie,

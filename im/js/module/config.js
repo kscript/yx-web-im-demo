@@ -2,6 +2,7 @@ define([],
   function() {
   'use strict';
   var CONFIG = {
+    host: localStorage.getItem('host') || '',
     // im所在的地址
     homeLink: '/',
     // 登录地址

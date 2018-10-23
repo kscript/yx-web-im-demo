@@ -1,0 +1,27 @@
+{
+  "name": "yx-web-im-demo",
+  "version": "1.0.0",
+  "description": "云信 webim",
+  "main": "index.js",
+  "scripts": {
+    "run": "node ./",
+    "rjs": "node im/js/r.js -o im/js/build.js findNestedDependencies=true",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitee.com:kscript/917.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "fs.promised": "^3.0.0",
+    "koa": "^2.5.3",
+    "koa-bodyparser": "^4.2.1",
+    "koa-route": "^3.2.0",
+    "koa-static": "^5.0.0",
+    "path": "^0.12.7"
+  }
+}

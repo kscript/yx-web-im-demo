@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>云信 Web Demo</title>
+	<link rel="stylesheet" href="css/main.css"/>
+	<link rel="icon" href="images/icon.ico" type="image/x-icon"/>
+</head>
+<body>
+	<script src="js/require.js"></script>
+	<script>
+		// 登录页在线上是非必要的
+		// 只要有设置好cookie, 就可以直接进入im
+		requirejs.config({
+			baseUrl: 'js/module',
+			paths: {
+				util: 'util',
+				config: 'config'
+			}
+		})
+		requirejs([
+			'util',
+			'config'
+		], function(
+			Util,
+			CONFIG
+		){
+			Util.setCookie('uid', CONFIG.uid);
+			Util.setCookie('sdktoken', CONFIG.token);
+			Util.setHome();
+		});
+	</script>
+</body>
+</html>

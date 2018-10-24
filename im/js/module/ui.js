@@ -103,6 +103,9 @@ define([
           notificationText +
           '</span></p>';
       } else {
+        // 使用自定义模板
+        var custom = false;
+        var content = {};
         //聊天消息
         var type = message.type,
           from = message.from,
@@ -133,8 +136,18 @@ define([
               '</span></p>',
             '</div>'
           ].join('');
-        } else if(type === 'custom'){
-          msgHtml = [
+        } else {
+          if(type === 'custom'){
+            try{
+              content = JSON.parse(message.content);
+              // 4以上使用自定义模板
+              custom = content.type > 4;
+            }catch(e){
+              console.log(e);
+            }
+          }
+          if(custom){
+            msgHtml = [
               '<div data-time="' +
               message.time +
               '" data-id="' +
@@ -143,15 +156,14 @@ define([
               message.idClient +
               '" data-idServer="' +
               message.idServer +
-              '" class="item item-' +
-              Util.buildSender(message) +
+              '" class="item item-custom' +
               '">',
               '<img class="img j-img" src="' +
               Util.getAvatar(avatar) +
               '" data-account="' +
               from +
               '"/>',
-              '<div class="msg msg-text j-msg">',
+              '<div class="msg msg-text">',
               '<div class="box">',
               '<div class="cnt">',
               Util.getMessage(message),
@@ -160,76 +172,77 @@ define([
               '</div>',
               '</div>'
             ].join('');
-        } else{
-          msgHtml = [
-            '<div data-time="' +
-              message.time +
-              '" data-id="' +
-              message.idClient +
-              '" id="' +
-              message.idClient +
-              '" data-idServer="' +
-              message.idServer +
-              '" class="item item-' +
-              Util.buildSender(message) +
-              '">',
-            '<img class="img j-img" src="' +
-              Util.getAvatar(avatar) +
-              '" data-account="' +
-              from +
-              '"/>',
-            showNick ? '<p class="nick">' + Util.getNick(from) + '</p>' : '',
-            '<div class="msg msg-text j-msg">',
-            '<div class="box">',
-            '<div class="cnt">',
-            Util.getMessage(message),
-            '</div>',
-            '</div>',
-            '</div>'
-          ];
-          if (message.blacked) {
-            msgHtml.push(
-              '<span class="error" data-session="' +
-                message.sessionId +
-                '" data-id="' +
-                message.idClient +
-                '"><i class="icon icon-error"></i>发送失败,已被拉黑</span>'
-            );
-          } else if (message.status === 'fail') {
-            msgHtml.push(
-              '<span class="error j-resend" data-session="' +
-                message.sessionId +
-                '" data-id="' +
-                message.idClient +
-                '"><i class="icon icon-error"></i>发送失败,点击重发</span>'
-            );
           } else {
-            msgHtml.push('');
+            msgHtml = [
+              '<div data-time="' +
+                message.time +
+                '" data-id="' +
+                message.idClient +
+                '" id="' +
+                message.idClient +
+                '" data-idServer="' +
+                message.idServer +
+                '" class="item item-' +
+                Util.buildSender(message) +
+                '">',
+              '<img class="img j-img" src="' +
+                Util.getAvatar(avatar) +
+                '" data-account="' +
+                from +
+                '"/>',
+              showNick ? '<p class="nick">' + Util.getNick(from) + '</p>' : '',
+              '<div class="msg msg-text j-msg">',
+              '<div class="box">',
+              '<div class="cnt">',
+              Util.getMessage(message),
+              '</div>',
+              '</div>',
+              '</div>'
+            ];
+            if (message.blacked) {
+              msgHtml.push(
+                '<span class="error" data-session="' +
+                  message.sessionId +
+                  '" data-id="' +
+                  message.idClient +
+                  '"><i class="icon icon-error"></i>发送失败,已被拉黑</span>'
+              );
+            } else if (message.status === 'fail') {
+              msgHtml.push(
+                '<span class="error j-resend" data-session="' +
+                  message.sessionId +
+                  '" data-id="' +
+                  message.idClient +
+                  '"><i class="icon icon-error"></i>发送失败,点击重发</span>'
+              );
+            } else {
+              msgHtml.push('');
+            }
+            // 群组已读部分代码
+            // if (
+            //   message.scene === 'team' &&
+            //   message.needMsgReceipt &&
+            //   message.idServer &&
+            //   message.flow === 'out'
+            // ) {
+            //   if (+message.teamMsgUnread === 0) {
+            //     msgHtml = msgHtml.concat([
+            //       '<span class="readTeamMsg"><i></i>全部已读</span>'
+            //     ]);
+            //   } else if (+message.teamMsgUnread > 0) {
+            //     msgHtml = msgHtml.concat([
+            //       '<span class="readTeamMsg"><i></i>' +
+            //         message.teamMsgUnread +
+            //         '人未读</span>'
+            //     ]);
+            //   }
+            // }
+            msgHtml = msgHtml.concat([
+              '<span class="readMsg"><i></i>已读</span>',
+              '</div>'
+            ]);
+            msgHtml = msgHtml.join('');
           }
-          // 群组已读部分代码
-          // if (
-          //   message.scene === 'team' &&
-          //   message.needMsgReceipt &&
-          //   message.idServer &&
-          //   message.flow === 'out'
-          // ) {
-          //   if (+message.teamMsgUnread === 0) {
-          //     msgHtml = msgHtml.concat([
-          //       '<span class="readTeamMsg"><i></i>全部已读</span>'
-          //     ]);
-          //   } else if (+message.teamMsgUnread > 0) {
-          //     msgHtml = msgHtml.concat([
-          //       '<span class="readTeamMsg"><i></i>' +
-          //         message.teamMsgUnread +
-          //         '人未读</span>'
-          //     ]);
-          //   }
-          // }
-          msgHtml = msgHtml.concat([
-            '<span class="readMsg"><i></i>已读</span>',
-            '</div>'
-          ]);
-          msgHtml = msgHtml.join('');
         }
       }
       return msgHtml;

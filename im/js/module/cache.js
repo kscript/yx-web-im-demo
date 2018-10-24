@@ -169,7 +169,7 @@ define([],
     }
   };
   Cache.prototype.addMsg = function(msg) {
-    console.log(msg);
+
     var user;
     if (msg.scene === 'team') {
       user = 'team-' + msg.to;

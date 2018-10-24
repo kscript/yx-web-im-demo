@@ -13,7 +13,8 @@
 </head>
 
 <body class="demo">
-	<div class="wrapper box-sizing">
+	<div id="nim" class="wrapper box-sizing mini">
+		<div class="btn j-btn-chat btn-chat2">聊天</div>
 		<div class="content">
 			<div class="left-panel radius5px" id="left-panel">
 				<div class="hide loading" id="loading"></div>
@@ -21,6 +22,9 @@
 				<div class="item" id="sessionsWrap" data-type="sessions">
 					<!-- 最近联系人 -->
 					<div class="list">
+						<div class="btn j-btn-chat btn-chat1">
+							<div class="el-icon"></div>
+						</div>
 						<div id="sessions">
 							<p>正在获取最近联系人...</p>
 						</div>
@@ -54,7 +58,7 @@
 					<div class="chat-editor box-sizing" id="chatEditor" data-disabled="1">
 						<div id="emojiTag" class="m-emojiTag"></div>
 						<a class="chat-btn u-emoji" id="showEmoji"></a>
-						<span class="chat-btn msg-type" id="chooseFileBtn">
+						<span class="chat-btn msg-type hide" id="chooseFileBtn">
 							<a class="icon icon-file" data-type="file"></a>
 						</span>
 						<!-- 在netcall_ui.js的fn.whenOpenChatBox中隐藏 -->

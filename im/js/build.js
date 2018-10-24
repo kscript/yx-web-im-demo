@@ -2,12 +2,13 @@
   baseUrl: './module',
   paths : {
     'main': 'main',
-    'util' : 'util',
-    'SDK': 'NIM_Web_SDK_v5.5.0',
     'jquery': 'jquery-1.11.3.min',
     'jqueryContextMenu': 'jquery.contextMenu.min',
+    'SDK': 'NIM_Web_SDK_v5.5.0',
+    'config': 'config',
+    'util' : 'util',
     'base': 'base',
-    'uiKit': 'uiKit.min',
+    'uiKit': 'uiKit',
     'YX': 'yx',
     'appUI': 'ui',
     'cache': 'cache',
@@ -15,7 +16,11 @@
     'message': 'message',
     'session': 'session',
     'cloudMsg': 'cloudMsg',
-    'emoji':  'emoji'
+    'emoji':  'emoji',
+    'sessionList': 'sessionList',
+    'friendList': 'friendList',
+    'teamList': 'teamList',
+    'kitUtil': 'kitUtil'
   },
   shim:{
   },

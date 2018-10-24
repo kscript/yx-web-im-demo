@@ -54,6 +54,36 @@ YX.fn.buildSessions = function(id) {
         event.preventDefault()
     }.bind(this))
 }
+/**
+ * 删除本地会话
+ * @func
+ * @param {array|object} list 要删除的会话/会话组 [{scene, to}]
+ */
+YX.fn.deleteLocalSessions = function(list){
+    if(list){
+        list = list instanceof Array ? list : [list];
+        for(var i = 0;i < list.length; i++){
+            this.nim.deleteLocalSession({
+                id: list[i].scene + '-' + list[i].to
+            });
+        }
+    }
+}
+/**
+ * 删除服务器上的会话
+ * @func
+ * @param {array|object} list 要删除的会话/会话组 [{scene, to}]
+ * @param {function} done 执行删除后的回调
+ */
+YX.fn.deleteSessions = function(list, done){
+    if(list){
+        list = list instanceof Array ? list : [list];
+        this.nim.deleteSessions({
+            sessions: list,
+            done: done
+        });
+    }
+}
  // 导航上加未读数
 YX.fn.showUnread = function () {
     var counts = $("#sessions .panel_count")

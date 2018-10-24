@@ -8,7 +8,7 @@ requirejs.config({
     'config': 'config',
     'util' : 'util',
     'base': 'base',
-    'uiKit': 'uiKit.min',
+    'uiKit': 'uiKit',
     'YX': 'yx',
     'appUI': 'ui',
     'cache': 'cache',
@@ -16,12 +16,20 @@ requirejs.config({
     'message': 'message',
     'session': 'session',
     'cloudMsg': 'cloudMsg',
-    'emoji':  'emoji'
+    'emoji':  'emoji',
+    'sessionList': 'sessionList',
+    'friendList': 'friendList',
+    'teamList': 'teamList',
+    'kitUtil': 'kitUtil'
   }
 });
 requirejs([
   'jquery'
-], function(){
+], function($){
+  $("#nim .j-btn-chat").on("click", function(){
+    $("#rightPanel,#chatVernier").addClass("hide");
+    $("#nim").toggleClass("mini");
+  });
   requirejs([
     'SDK',
     'config',

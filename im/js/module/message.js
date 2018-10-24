@@ -130,7 +130,6 @@ YX.fn.initEmoji = function() {
       height: 300,
       imgpath: './images/',
       callback: function(result) {
-        console.log(result);
         that.cbShowEmoji(result);
       }
     };

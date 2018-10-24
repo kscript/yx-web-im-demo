@@ -206,7 +206,7 @@ function buildSessionMsg(msg) {
             } else if (content.type === 4) {
                 text += '[白板]';
             } else {
-                text += '[自定义消息]';
+                text += content.text || '[自定义消息]';
             }
             break;
         case 'notification':
@@ -317,8 +317,10 @@ function getMessage(msg) {
                 str = '<img class="chartlet" src="./images/' + catalog + '/' + chartvar + '.png">';
             } else if (content.type == 4) {
                 str = msg.fromNick + '发起了[白板互动]';
+            } else if (content.type == 5) {
+                str = content.text;
             } else {
-                str = sentStr + '一条[自定义]消息，请到手机或电脑客户端查看';
+                str = content.text || ''; //; sentStr + '一条[自定义]消息，请到手机或电脑客户端查看';
             }
             break;
         case 'robot':
@@ -409,7 +411,9 @@ var transTime2 = (function () {
 function buildSender(msg) {
     var sender = '';
     if (msg.from === msg.to) {
-        if (msg.fromClientType === "Web") {
+        if(msg.type === 'custom'){
+            sender = 'custom';
+        } else if (msg.fromClientType === "Web") {
             sender = 'me';
         } else {
             sender = 'you';

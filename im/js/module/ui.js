@@ -133,7 +133,34 @@ define([
               '</span></p>',
             '</div>'
           ].join('');
-        } else {
+        } else if(type === 'custom'){
+          msgHtml = [
+              '<div data-time="' +
+              message.time +
+              '" data-id="' +
+              message.idClient +
+              '" id="' +
+              message.idClient +
+              '" data-idServer="' +
+              message.idServer +
+              '" class="item item-' +
+              Util.buildSender(message) +
+              '">',
+              '<img class="img j-img" src="' +
+              Util.getAvatar(avatar) +
+              '" data-account="' +
+              from +
+              '"/>',
+              '<div class="msg msg-text j-msg">',
+              '<div class="box">',
+              '<div class="cnt">',
+              Util.getMessage(message),
+              '</div>',
+              '</div>',
+              '</div>',
+              '</div>'
+            ].join('');
+        } else{
           msgHtml = [
             '<div data-time="' +
               message.time +

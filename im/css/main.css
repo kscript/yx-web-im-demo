@@ -41,6 +41,9 @@
 .wrapper .chat-mask{z-index: 5; background-color: #e5f4ff; width: 710px; height: 14px; position: absolute; bottom: 9px; opacity: 0.8; text-align: center; padding: 20px 0; font-size: 14px;}
 .wrapper .chat-content {position: absolute; top: 81px; bottom: 60px; width: 100%; overflow-y: auto; padding: 10px 3%;}
 .wrapper .chat-content .item{overflow: hidden; padding: 4px 0px 10px 0px;}
+.wrapper .chat-content .item.item-custom{ text-align: center; }
+.wrapper .chat-content .item.item-custom .j-msg{ border: none; }
+.wrapper .chat-content .item.item-custom img{ display: none; }
 .wrapper .chat-content .img{cursor: pointer; border-radius: 50%;}
 .wrapper .no-msg span {padding: 3px 15px; background-color: #e5f4ff; color:#6b8299;}
 
@@ -96,6 +99,9 @@
 .wrapper .devices-container .mobile p,.wrapper .devices-container .pc p{line-height: 54px; margin-left: 12px;}
 .wrapper .devices-container .mobile a,.wrapper .devices-container .pc a{position: absolute; top: 7px; right: 8px; width: 72px; height: 40px; background-color: #f05b60; line-height: 40px; text-align: center; color: #fff; font-size: 14px; border-radius: 2px;}
 .wrapper .cloud-msg-container .item{overflow: hidden; padding: 4px 0px 10px 0px;}
+.wrapper .cloud-msg-container .item.item-custom{ text-align: center; }
+.wrapper .cloud-msg-container .item.item-custom .j-msg{ border: none; }
+.wrapper .cloud-msg-container .item.item-custom img{ display: none; }
 
 .wrapper .u-status {margin-bottom: 10px;}
 .wrapper .u-status span,.wrapper .u-status a{padding: 3px 15px; background-color: #e5f4ff; color:#6b8299;}

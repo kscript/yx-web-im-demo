@@ -498,6 +498,21 @@ YX.fn.sendTeamNetCallTip = function(option) {
     }.bind(this)
   });
 };
+/** 发送自定义消息并渲染
+ * @param {string} from 发送者账号
+ * @param {string} text 发送内容
+ */
+YX.fn.customMessagehandler = function (from, text){
+  var that = this;
+  from && text && that.mysdk.sendCustomMessage('p2p', from, {
+    type: 5,
+    text: text
+  }, function(err, data){
+      if(that.crtSessionAccount === from){
+        that.sendMsgDone(err, data);
+      }
+  })
+}
 
 /** 对列表用户进行点对点发送自定义系统通知
  * @param {Array} list

@@ -1,6 +1,6 @@
 #nim {position: absolute;right: 10px; bottom: 0px; z-index: 1010; overflow: visible; min-width: 260px; height: 450px; min-height: 450px;  padding: 10px 0; margin: 0 auto; background: url(../images/logo_bg.png) no-repeat center; font:12px/1.14 arial,\5b8b\4f53;color:#666;font-family: Tahoma, '微软雅黑';-webkit-font-smoothing:antialiased;-webkit-text-size-adjust: none;}
 #nim.mini{top: auto; bottom: 6px; right: 6px; width: 80px; min-width: 80px; min-height: 28px; height: 28px; padding: 0;}
-
+#nim.mini #cloudMsgContainer{display: none;}
 #nim .btn.btn-chat1{display: block; position: absolute; right: 0; top: 0px; float: right; padding: 6px 2px;}
 #nim .btn.btn-chat1 .el-icon{width: 12px; text-align: center; font-size: 12px; height: 2px; background: #ddd; border: 1px solid #dcdcdc; border-radius: 5px; cursor: pointer;}
 #nim .btn.btn-chat1:hover .el-icon{border-color: #bdbdbd; background: #bbb;}

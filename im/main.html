@@ -111,9 +111,41 @@
 			</div>
 		</div>
 	</div>
+	<script src="js/module/jquery-1.11.3.min.js"></script>
 	<script src="js/require.js"></script>
-	<script src="js/main-built.js"></script>
-	<!-- <script src="js/module/main.js"></script> -->
+	<script>
+		var imInit = false;
+		$("#nim .j-btn-chat").on("click", function(){
+			if(!imInit){
+				imInit = true;
+				$.ajax({
+					url: 'http://localhost:3001/iminfo',
+					type: 'POST',
+					dataType: 'json',
+					success: function(response){
+						localStorage.setItem('uid', response.data.uid);
+						localStorage.setItem('token', response.data.token);
+						localStorage.setItem('appkey', response.data.appkey);
+						requirejs([
+							'js/main-built.js'
+						], function(){
+							$("#rightPanel,#chatVernier span").addClass("hide");
+							$("#nim").toggleClass("mini");
+							requirejs([
+								'global'
+							], function(global){
+								// 模块公共变量
+								console.log(global());
+							})
+						});
+					}
+				});
+			} else {
+				$("#rightPanel,#chatVernier span").addClass("hide");
+				$("#nim").toggleClass("mini");
+			}
+		});
+	</script>
 </body>
 
 </html>

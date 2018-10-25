@@ -215,12 +215,12 @@
 #nim .m-emoji-chnCol-ul span img{display: block;height: 80%;width:auto;margin:10%;}
 
 #nim .left-panel{float: right;padding: 10px; box-sizing: border-box; height: 100%;}
-#nim .left-panel .item{height: 100%;}
+#nim .left-panel .item{height: 420px!important;}
 #nim .right-panel,
 #nim .cloud-msg-container,
 #nim .team-info-container{height: 450px; width: 560px; margin-right: 300px; margin-left: 0;border: 1px solid #dfdfdf; }
 #nim .cloud-msg-container{position: absolute; top: 10px;}
-#nim .cloud-msg-container .info-content{height: 326px; padding: 5px; overflow: auto;}
+#nim .cloud-msg-container .info-content{height: 356px; padding: 5px; overflow: auto;}
 #nim .chatVernier{position: absolute; left: auto; right: 285px;}
 
 @font-face {font-family: "context-menu-icons"; font-style: normal; font-weight: normal; src: url("./font/context-menu-icons.eot?14l1a"); src: url("./font/context-menu-icons.eot?14l1a#iefix") format("embedded-opentype"), url("./font/context-menu-icons.woff2?14l1a") format("woff2"), url("./font/context-menu-icons.woff?14l1a") format("woff"), url("./font/context-menu-icons.ttf?14l1a") format("truetype");}

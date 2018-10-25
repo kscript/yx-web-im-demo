@@ -14,10 +14,11 @@ define([
   ) {
 
 function SDKBridge(ctr, data) {
-  var sdktoken = Util.readCookie('sdktoken'),
-    userUID = global('userUID') || Util.readCookie('uid'),
+  var token = global('token'),
+    userUID = global('userUID'),
+    appkey = global('appkey')
     that = this;
-  if (!sdktoken) {
+  if (!token) {
     Util.setLogin();
     return;
   }
@@ -36,9 +37,9 @@ function SDKBridge(ctr, data) {
       style: 'font-size:14px;color:blue;background-color:rgba(0,0,0,0.1)'
     },
     db: true,
-    appKey: CONFIG.appkey,
+    appKey: appkey,
     account: userUID,
-    token: sdktoken,
+    token: token,
     // 私有化配置文件
     privateConf: CONFIG.privateConf,
     //连接
@@ -128,9 +129,9 @@ function SDKBridge(ctr, data) {
         // 账号或者密码错误, 请跳转到登录页面并提示错误
         case 302:
           alert(error.message);
-          Util.delCookie('uid');
-          Util.delCookie('sdktoken');
-          Util.delCookie('nickName');
+          // Util.delCookie('uid');
+          // Util.delCookie('sdktoken');
+          // Util.delCookie('nickName');
           Util.setLogin();
           break;
         // 被踢, 请提示错误后跳转到登录页面
@@ -151,9 +152,9 @@ function SDKBridge(ctr, data) {
               (map[str] || '其他端') +
               '踢出下线，请确定帐号信息安全!'
           );
-          Util.delCookie('uid');
-          Util.delCookie('sdktoken');
-          Util.delCookie('nickName');
+          // Util.delCookie('uid');
+          // Util.delCookie('sdktoken');
+          // Util.delCookie('nickName');
           Util.setLogin('kick');
           break;
         default:

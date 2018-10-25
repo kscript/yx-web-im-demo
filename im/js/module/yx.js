@@ -16,7 +16,7 @@ define([
   function YX (accid) {
     this.accid = accid;
     this.initModule();
-    this.userUID = global('userUID') || Util.readCookie('uid');
+    this.userUID = global('userUID');
     this.cache = Cache;
     this.mysdk = new SDKBridge(this, this.cache);
     // this.myNetcall = new NetcallBridge(this);

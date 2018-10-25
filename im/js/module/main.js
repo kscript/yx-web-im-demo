@@ -24,21 +24,14 @@ requirejs.config({
     'kitUtil': 'kitUtil'
   }
 });
+
 requirejs([
-  'jquery'
-], function($){
-  $("#nim .j-btn-chat").on("click", function(){
-    $("#rightPanel,#chatVernier span").addClass("hide");
-    $("#nim").toggleClass("mini");
-  });
+  'SDK',
+  'config',
+  'util',
+  'global'
+], function(){
   requirejs([
-    'SDK',
-    'config',
-    'util',
-    'global'
-  ], function(){
-    requirejs([
-      'base'
-    ])
-  })
-})
+    'base'
+  ]);
+});

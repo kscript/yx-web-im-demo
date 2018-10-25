@@ -118,28 +118,31 @@
 		$("#nim .j-btn-chat").on("click", function(){
 			if(!imInit){
 				imInit = true;
-				$.ajax({
-					url: 'http://localhost:3001/iminfo',
-					type: 'POST',
-					dataType: 'json',
-					success: function(response){
-						localStorage.setItem('uid', response.data.uid);
-						localStorage.setItem('token', response.data.token);
-						localStorage.setItem('appkey', response.data.appkey);
-						requirejs([
-							'js/main-built.js'
-						], function(){
-							$("#rightPanel,#chatVernier span").addClass("hide");
-							$("#nim").toggleClass("mini");
-							requirejs([
-								'global'
-							], function(global){
-								// 模块公共变量
-								console.log(global());
-							})
-						});
-					}
+				// 测试时手动设置localStorage, 不请求接口
+				requirejs([
+          'js/main-built.js'
+        ], function(){
+          $("#rightPanel,#chatVernier span").addClass("hide");
+          $("#nim").toggleClass("mini");
 				});
+
+				// 上线
+				// $.ajax({
+				// 	url: 'http://localhost:3001/iminfo',
+				// 	type: 'POST',
+				// 	dataType: 'json',
+				// 	success: function(response){
+				// 		localStorage.setItem('uid', response.data.uid);
+				// 		localStorage.setItem('token', response.data.token);
+				// 		localStorage.setItem('appkey', response.data.appkey);
+				// 		requirejs([
+				// 			'js/main-built.js'
+				// 		], function(){
+				// 			$("#rightPanel,#chatVernier span").addClass("hide");
+				// 			$("#nim").toggleClass("mini");
+				// 		});
+				// 	}
+				// });
 			} else {
 				$("#rightPanel,#chatVernier span").addClass("hide");
 				$("#nim").toggleClass("mini");

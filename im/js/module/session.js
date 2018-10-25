@@ -27,7 +27,9 @@ YX.fn.buildSessions = function(id) {
     if(!this.sessions){
         var options = {
             data:data,
+            // 点击某一会话
             onclickitem:this.openChatBox.bind(this),
+            // 点击用户头像
             infoprovider:this.infoProvider.bind(this),
 
         } 
@@ -38,8 +40,8 @@ YX.fn.buildSessions = function(id) {
         this.sessions.update(data)
     }
     //导航上加未读示例  
-    this.showUnread()         		
-    this.doPoint()
+    this.showUnread();
+    this.doPoint();
     //已读回执处理
     this.markMsgRead(id)
     var $node = $(".m-unread .u-unread")

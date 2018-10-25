@@ -27,7 +27,7 @@ requirejs([
   'jquery'
 ], function($){
   $("#nim .j-btn-chat").on("click", function(){
-    $("#rightPanel,#chatVernier").addClass("hide");
+    $("#rightPanel,#chatVernier span").addClass("hide");
     $("#nim").toggleClass("mini");
   });
   requirejs([

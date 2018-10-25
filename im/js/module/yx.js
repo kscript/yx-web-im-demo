@@ -136,6 +136,11 @@ define([
   YX.fn.openChatBox = function(account, scene) {
     var info;
     var that = this;
+    if(this.crtSessionAccount === account && !this.$rightPanel.hasClass("hide")){
+      this.$rightPanel.addClass("hide");
+      this.$chatVernier.addClass("hide");
+      return ;
+    }
     this.mysdk.setCurrSession(scene, account);
     this.crtSession = scene + '-' + account;
     this.crtSessionType = scene;
@@ -144,6 +149,8 @@ define([
     $('#teamInfoContainer') && $('#teamInfoContainer').addClass('hide');
     this.$devices && this.$devices.addClass('hide');
     this.$cloudMsgContainer && this.$cloudMsgContainer.addClass('hide');
+    this.$chatVernier.removeClass("hide");
+    
     //退群的特殊UI
     this.$rightPanel.find('.u-chat-notice').addClass('hide');
     this.$rightPanel.find('.chat-mask').addClass('hide');

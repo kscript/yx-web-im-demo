@@ -417,10 +417,15 @@ YX.fn.markMsgRead = function(id) {
     if (message.scene === 'team') {
       return;
     }
-    if (message.type !== 'tip' && window.nim.isMsgRemoteRead(message)) {
-      $('.item.item-me.read').removeClass('read');
+    if (message.type !== 'tip' && this.nim.isMsgRemoteRead(message)) {
+      
+      // 只标记最后一个已读信息
+      // $('.item.item-me.read').removeClass('read');
+      // $('#' + message.idClient).addClass('read');
+      // break;
+
+      // 标记所有的已读信息
       $('#' + message.idClient).addClass('read');
-      break;
     }
   }
 };

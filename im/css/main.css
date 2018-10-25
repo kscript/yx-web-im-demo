@@ -145,7 +145,7 @@
 #nim .ui-datepicker{display: none;}
 #nim .back-btn {width: 68px; height: 34px; line-height: 34px; background-color: #f5f5f5; color:#88939b; font-size: 12px; border: 1px solid #ced4d9; position: absolute; left: 15px; top: 13px;}
 
-#nim .msg-input.p2p{width: 400px;}
+#nim .msg-input.p2p{width: 400px; overflow: hidden;}
 #nim .chat-context {display: none; font-size: 16px; line-height: 42px; vertical-align: middle;}
 #nim .chat-context label {vertical-align: middle;}
 #nim .chat-context input {width: 16px; height: 16px; vertical-align: middle;}

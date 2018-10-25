@@ -2,11 +2,15 @@ define([
   'YX',
   'util',
   'appUI',
+  'emoji',
+  'global',
   'jqueryContextMenu'
 ],function(
   YX,
   Util,
-  appUI
+  appUI,
+  emoji,
+  global
 ) {
 /*
 * @Author: 消息逻辑
@@ -61,7 +65,7 @@ YX.fn.message = function() {
                 alert(err.message || '操作失败');
               }
             } else {
-              msg.opeAccount = userUID;
+              msg.opeAccount = global('userUID');
               this.backoutMsg(id, { msg: msg });
             }
           }.bind(this)
@@ -83,7 +87,7 @@ YX.fn.message = function() {
  */
 YX.fn.doMsg = function(msg) {
   var that = this,
-    who = msg.to === userUID ? msg.from : msg.to,
+    who = msg.to === global('userUID') ? msg.from : msg.to,
     updateContentUI = function() {
       //如果当前消息对象的会话面板打开
       if (that.crtSessionAccount === who) {
@@ -124,8 +128,8 @@ YX.fn.initEmoji = function() {
   this.$showEmoji.on('click', this.showEmoji.bind(this));
   var that = this,
     emojiConfig = {
-      emojiList: emojiList, //普通表情
-      pinupList: pinupList, //贴图
+      emojiList: emoji.emojiList, //普通表情
+      pinupList: emoji.pinupList, //贴图
       width: 500,
       height: 300,
       imgpath: './images/',
@@ -133,7 +137,7 @@ YX.fn.initEmoji = function() {
         that.cbShowEmoji(result);
       }
     };
-  this.$emNode = new CEmojiEngine($('#emojiTag')[0], emojiConfig);
+  this.$emNode = new emoji.CEmojiEngine($('#emojiTag')[0], emojiConfig);
   this.$emNode._$hide();
 };
 /**
@@ -453,7 +457,7 @@ YX.fn.backoutMsg = function(id, data) {
     idClient: msg.idClient || null,
     scene: msg.scene,
     to: to,
-    tip: (userUID === opeAccount ? '你' : opeNick) + '撤回了一条消息',
+    tip: (global('userUID') === opeAccount ? '你' : opeNick) + '撤回了一条消息',
     time: msg.time,
     done: function(err, data) {
       if (!err) {

@@ -1,5 +1,9 @@
-define([],
-  function() {
+define([
+  'global'
+],
+  function(
+    global
+  ) {
   function Cache(argument) {
     this.friendslist = [];
     this.personlist = {};
@@ -37,7 +41,7 @@ define([],
   };
 
   Cache.prototype.updateAvatar = function(url) {
-    this.personlist[userUID].avatar = url;
+    this.personlist[global('userUID')].avatar = url;
   };
   Cache.prototype.updatePersonlist = function(list) {
     if (!this.personlist[list.account]) {
@@ -160,7 +164,7 @@ define([],
         }
         this.msgs['team-' + user].push(msgs[i]);
       } else {
-        user = msgs[i].from === userUID ? msgs[i].to : msgs[i].from;
+        user = msgs[i].from === global('userUID') ? msgs[i].to : msgs[i].from;
         if (!this.msgs['p2p-' + user]) {
           this.msgs['p2p-' + user] = [];
         }
@@ -178,7 +182,7 @@ define([],
       }
       this.msgs[user].push(msg);
     } else {
-      user = 'p2p-' + (msg.from === userUID ? msg.to : msg.from);
+      user = 'p2p-' + (msg.from === global('userUID') ? msg.to : msg.from);
       if (!this.msgs[user]) {
         this.msgs[user] = [];
       }
@@ -202,7 +206,7 @@ define([],
         this.msgs[sessionId].unshift(msgs[i]);
         cacheSession[sessionId] = true;
       } else {
-        user = msgs[i].from === userUID ? msgs[i].to : msgs[i].from;
+        user = msgs[i].from === global('userUID') ? msgs[i].to : msgs[i].from;
         var sessionId = msgs[i].scene + '-' + user
         if (reset && (!cacheSession[sessionId])) {
           this.msgs[sessionId] = []

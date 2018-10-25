@@ -1,10 +1,14 @@
 define([
     'cache',
-    'config'
+    'config',
+    'emoji',
+    'global'
 ],
     function(
         Cache,
-        CONFIG
+        CONFIG,
+        emoji,
+        global
     ) {
 
 // IE 11 polify
@@ -163,12 +167,12 @@ Array.union = function (a, b) {
 * @param msg：消息对象
 */
 function buildSessionMsg(msg) {
-    var text = (msg.scene != 'p2p' ? ((msg.from === userUID) ? "你" : getNick(msg.from)) + ":" : ""), type = msg.type;
+    var text = (msg.scene != 'p2p' ? ((msg.from === global('userUID')) ? "你" : getNick(msg.from)) + ":" : ""), type = msg.type;
     if (!/text|image|file|audio|video|geo|custom|tip|notification/i.test(type)) return '';
     switch (type) {
         case 'text':
             text += _$escape(msg.text);
-            text = buildEmoji(text);
+            text = emoji.buildEmoji(text);
             break;
         case 'image':
             text += '[图片]';
@@ -237,7 +241,7 @@ function getMessage(msg) {
             str = _$escape(msg.text);
             str = str.replace(re, "<a href='$1' target='_blank'>$1</a>");
 
-            str = buildEmoji(str);
+            str = emoji.buildEmoji(str);
             str = "<div class='f-maxWid'>" + str + "</div>"
             break;
         case 'image':
@@ -293,7 +297,7 @@ function getMessage(msg) {
             break;
         case 'audio':
             if (!!window.Audio) {
-                if (msg.from === userUID && msg.from !== msg.to) {
+                if (msg.from === global('userUID') && msg.from !== msg.to) {
                     str = '<div class="u-audio j-mbox right"> <a href="javascript:;" class="j-play playAudio" data-dur="' + msg.file.dur + '"  data-src="' + url + '">点击播放</a><b class="j-duration">' + Math.floor((msg.file.dur) / 1000) + '"</b><span class="u-icn u-icn-play" title="播放音频"></span></div>'
                 } else {
                     str = '<div class="u-audio j-mbox left"> <a href="javascript:;" class="j-play playAudio" data-dur="' + msg.file.dur + '"  data-src="' + url + '">点击播放</a><b class="j-duration">' + Math.floor((msg.file.dur) / 1000) + '"</b><span class="u-icn u-icn-play" title="播放音频"></span></div>'
@@ -494,6 +498,7 @@ function getNetcallDurationText(allSeconds) {
 };
 
 function transNotification(item) {
+    var userUID = global('userUID');
     var type = item.attach.type,
         from = (item.from === userUID ? true : false),
         str,
@@ -505,10 +510,10 @@ function transNotification(item) {
     //这冗余代码就是为了处理群通知的文案高级群叫群，讨论组叫讨论组
     var team = item.attach && item.attach.team;
     if (!team) {
-        team = yunXin.cache.getTeamMapById(item.target);
+        team = global('yunXin').cache.getTeamMapById(item.target);
     } else {
         if (!team.type) {
-            team = yunXin.cache.getTeamMapById(item.target);
+            team = global('yunXin').cache.getTeamMapById(item.target);
         }
     }
     if (team && team.type && team.type === "normal") {

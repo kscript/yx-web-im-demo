@@ -1,7 +1,11 @@
 define([
-  'util'
+  'util',
+  'global'
 ],
-  function(Util) {
+  function(
+    Util,
+    global
+  ) {
   var appUI = {
     /**
      * 当前会话聊天面板UI
@@ -110,7 +114,7 @@ define([
         var type = message.type,
           from = message.from,
           avatar = user.avatar,
-          showNick = message.scene === 'team' && from !== userUID,
+          showNick = message.scene === 'team' && from !== global('userUID'),
           msgHtml;
         if (type === 'tip') {
           msgHtml = [
@@ -124,7 +128,7 @@ define([
               message.idServer +
               '">',
             '<p class="u-notice tc item ' +
-              (from == userUID && message.idServer ? 'j-msgTip' : '') +
+              (from == global('userUID') && message.idServer ? 'j-msgTip' : '') +
               '" data-time="' +
               message.time +
               '" data-id="' +

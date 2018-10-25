@@ -1,7 +1,9 @@
 define([
-  'kitUtil'
+  'kitUtil',
+  'config'
 ], function(
-  util
+  util,
+  CONFIG
 ) {
   /**
    * 会话列表控件
@@ -84,7 +86,7 @@ define([
         var personSubscribes = data.personSubscribes
         var multiPortStatus = ''
         // 开启了订阅配置
-        if (info.scene === 'p2p' && window.CONFIG && window.CONFIG.openSubscription) {
+        if (info.scene === 'p2p' && CONFIG && CONFIG.openSubscription) {
           multiPortStatus = '离线'
           if (personSubscribes[account] && personSubscribes[account][1]) {
             multiPortStatus = (personSubscribes[account][1].multiPortStatus) || '离线'

@@ -1,7 +1,9 @@
 define([
-  'kitUtil'
+  'kitUtil',
+  'config'
 ], function(
-  util
+  util,
+  CONFIG
 ) {
   var ACCOUNT;
 
@@ -80,7 +82,7 @@ define([
     var personSubscribes = data.personSubscribes
     var multiPortStatus = ''
     // 开启了订阅配置
-    if (window.CONFIG && window.CONFIG.openSubscription) {
+    if (CONFIG && CONFIG.openSubscription) {
       multiPortStatus = '[离线]'
       if (personSubscribes[account] && personSubscribes[account][1]) {
       multiPortStatus = (personSubscribes[account][1].multiPortStatus) || '离线'

@@ -2,19 +2,21 @@ define([
   'cache',
   'SDKBridge',
   'config',
-  'util'
+  'util',
+  'global'
 ],
   function(
     Cache,
     SDKBridge,
     CONFIG,
-    Util
+    Util,
+    global
   ){
   'use strict';
   function YX (accid) {
     this.accid = accid;
     this.initModule();
-    this.userUID = Util.readCookie('uid');
+    this.userUID = global('userUID') || Util.readCookie('uid');
     this.cache = Cache;
     this.mysdk = new SDKBridge(this, this.cache);
     // this.myNetcall = new NetcallBridge(this);

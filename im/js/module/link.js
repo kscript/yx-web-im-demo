@@ -1,11 +1,13 @@
 define([
   'SDK',
+  'global',
   'config',
   'util',
   'appUI'
 ],
   function(
     SDK,
+    global,
     CONFIG,
     Util,
     appUI
@@ -13,7 +15,7 @@ define([
 
 function SDKBridge(ctr, data) {
   var sdktoken = Util.readCookie('sdktoken'),
-    userUID = Util.readCookie('uid'),
+    userUID = global('userUID') || Util.readCookie('uid'),
     that = this;
   if (!sdktoken) {
     Util.setLogin();
@@ -26,7 +28,7 @@ function SDKBridge(ctr, data) {
   this.person[userUID] = true;
   this.controller = ctr;
   this.cache = data;
-  window.nim = ctr.nim = this.nim = SDK.NIM.getInstance({
+  ctr.nim = this.nim = SDK.NIM.getInstance({
     //控制台日志，上线时应该关掉
     debug: false,
     _debug: true || {
@@ -47,7 +49,7 @@ function SDKBridge(ctr, data) {
     // 多端登录变化
     onloginportschange: onLoginPortsChange.bind(this),
     // 群
-    onteams: onTeams.bind(this),
+    // onteams: onTeams.bind(this),
     syncTeamMembers: false, //全成员先不同步了
     // onupdateteammember: onUpdateTeamMember.bind(this),
     // onteammembers: onTeamMembers.bind(this),
@@ -89,7 +91,7 @@ function SDKBridge(ctr, data) {
   this.nim.on('wbNotifyHangup', onwbNotifyHangup)
   function onwbNotifyHangup() {
     console.log('未接听挂断')
-    window.yunXin.WB.hangup()
+    global('yunXin').WB.hangup()
   }
   function onConnect() {
     $('errorNetwork').addClass('hide');
@@ -235,7 +237,7 @@ function SDKBridge(ctr, data) {
     for (var i = 0; i < msgs.length; i++) {
       if (msgs[i].scene === 'p2p') {
         this.person[
-          msgs[i].from !== userUID ? msgs[i].from : msgs[i].to
+          msgs[i].from !== global('userUID') ? msgs[i].from : msgs[i].to
         ] = true;
       }
     }
@@ -538,7 +540,7 @@ function SDKBridge(ctr, data) {
     var crtSession = ctr.crtSession;
     for (var i = 0; i < teamMsgReceipts.length; i++) {
       if ('team-' + teamMsgReceipts[i].teamId === crtSession) {
-        yunXin.doChatUI(crtSession);
+        global('yunXin').doChatUI(crtSession);
         break;
       }
     }

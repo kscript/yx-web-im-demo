@@ -2,6 +2,7 @@ requirejs.config({
   baseUrl: 'js/module',
   paths : {
     'main': 'main',
+    'global': 'global',
     'jquery': 'jquery-1.11.3.min',
     'jqueryContextMenu': 'jquery.contextMenu.min',
     'SDK': 'NIM_Web_SDK_v5.5.0',
@@ -34,11 +35,10 @@ requirejs([
     'SDK',
     'config',
     'util',
-  ], function(CONFIG){
-    window.CONFIG = CONFIG;
+    'global'
+  ], function(){
     requirejs([
       'base'
     ])
-  
   })
 })

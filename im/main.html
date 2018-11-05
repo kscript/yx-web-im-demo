@@ -389,21 +389,25 @@
 			})
 		}
 		function loadConfig(func){
-			$.ajax({
-					url:'http://localhost:3001/iminfo',
-					type: 'POST',
-					dataType: 'json',
-					success: function(response){
-						localStorage.setItem('baseUrl', '/');
-						localStorage.setItem('uid', response.data.uid);
-						localStorage.setItem('appkey', response.data.appkey);
-						localStorage.setItem('token', response.data.token);
-						func && func();
-					},
-					error: function(e){
-						console.log(e);
-					}
-				});
+			localStorage.setItem('baseUrl', 'https://kscript.github.io/yx-web-im-demo/im/');
+			localStorage.setItem('uid', 'kscript2018');
+			localStorage.setItem('appkey', '45c6af3c98409b18a84451215d0bdd6e');
+			localStorage.setItem('token', '0f2ce291c76ecfc032e3432142f06fac');
+			// $.ajax({
+			// 	url:'http://localhost:3001/iminfo',
+			// 	type: 'POST',
+			// 	dataType: 'json',
+			// 	success: function(response){
+			// 		localStorage.setItem('baseUrl', '/');
+			// 		localStorage.setItem('uid', response.data.uid);
+			// 		localStorage.setItem('appkey', response.data.appkey);
+			// 		localStorage.setItem('token', response.data.token);
+			// 		func && func();
+			// 	},
+			// 	error: function(e){
+			// 		console.log(e);
+			// 	}
+			// });
 		}
 	</script>
 </body>

@@ -21,6 +21,7 @@ define([
     this.mysdk = new SDKBridge(this, this.cache);
     // this.myNetcall = new NetcallBridge(this);
     this.firstLoadSysMsg = true;
+    this.oldUnread = 0;
     this.totalUnread = 0;
   };
   YX.fn = YX.prototype;
@@ -136,6 +137,9 @@ define([
    * 点击左边面板，打开聊天框
    *********************************/
   YX.fn.openChatBox = function(account, scene) {
+    if(global('openChatBox') && global('openChatBox')(account, scene)){
+      return ;
+    }
     var info;
     var that = this;
     if(this.crtSessionAccount === account && !this.$rightPanel.hasClass("hide")){
@@ -170,7 +174,7 @@ define([
       info = this.cache.getUserById(account);
       if (info.account == this.userUID) {
         this.$nickName.text('我的手机');
-        this.$chatTitle.find('img').attr('src', 'images/myPhone.png');
+        this.$chatTitle.find('img').attr('src', global('baseUrl') + 'images/myPhone.png');
       } else {
         if (CONFIG.openSubscription) {
           var multiPortStatus = this.cache.getMultiPortStatus(account);
@@ -199,13 +203,13 @@ define([
             .find('img')
             .attr('src', info.avatar + '?imageView&thumbnail=80x80&quality=85');
         } else {
-          this.$chatTitle.find('img').attr('src', 'images/' + info.type + '.png');
+          this.$chatTitle.find('img').attr('src', global('baseUrl') + 'images/' + info.type + '.png');
         }
         this.$nickName.text(info.name);
       } else {
         this.$rightPanel.find('.u-chat-notice').removeClass('hide');
         this.$rightPanel.find('.chat-mask').removeClass('hide');
-        this.$chatTitle.find('img').attr('src', 'images/normal.png');
+        this.$chatTitle.find('img').attr('src', global('baseUrl') + 'images/normal.png');
         this.$nickName.text(account);
       }
       this.getTeamMembers && this.getTeamMembers(account, function() {
@@ -323,7 +327,7 @@ define([
           //点对点
           if (msg.target === this.userUID) {
             info.nick = '我的手机';
-            info.avatar = 'images/myPhone.png';
+            info.avatar = global('baseUrl') + 'images/myPhone.png';
           } else {
             var userInfo = this.cache.getUserById(msg.target);
             info.nick = this.getNick(msg.target);
@@ -338,11 +342,11 @@ define([
               info.avatar =
                 teamInfo.avatar + '?imageView&thumbnail=40x40&quality=85';
             } else {
-              info.avatar = 'images/' + teamInfo.type + '.png';
+              info.avatar = global('baseUrl') + 'images/' + teamInfo.type + '.png';
             }
           } else {
             info.nick = msg.target;
-            info.avatar = 'images/normal.png';
+            info.avatar = global('baseUrl') + 'images/normal.png';
           }
         }
         break;
@@ -362,7 +366,7 @@ define([
           info.avatar = data.avatar + '?imageView&thumbnail=40x40&quality=85';
         } else {
           info.avatar =
-            info.type === 'normal' ? 'images/normal.png' : 'images/advanced.png';
+            info.type === 'normal' ? global('baseUrl') + 'images/normal.png' : global('baseUrl') + 'images/advanced.png';
         }
         info.crtSession = this.crtSession;
         break;
@@ -384,10 +388,10 @@ define([
     this.$logoutDialog.delegate('.j-ok', 'click', this.doLogout.bind(this));
   };
   YX.fn.doLogout = function() {
-    Util.delCookie('uid');
-    Util.delCookie('sdktoken');
-    Util.delCookie('avatar');
-    Util.delCookie('nickName');
+    Util.delStore('uid');
+    Util.delStore('sdktoken');
+    Util.delStore('avatar');
+    Util.delStore('nickName');
     Util.setLogout();
   };
   

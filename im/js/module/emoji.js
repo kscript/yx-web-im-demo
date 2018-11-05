@@ -1,4 +1,8 @@
-define([], function() {
+define([
+  'global'
+], function(
+  global
+) {
   var emoji={
 		"[大笑]":{file:"emoji_0.png"},
     "[可爱]":{file:"emoji_01.png"},
@@ -152,12 +156,12 @@ define([], function() {
   * 通过正则替换掉文本消息中的emoji表情
   * @param text：文本消息内容
   */
-  function buildEmoji(text) {
+  function buildEmoji(text, base) {
     var re = /\[([^\]\[]*)\]/g;
     var matches = text.match(re) || [];
     for (var j = 0, len = matches.length; j < len; ++j) {
       if(emoji[matches[j]]){
-        text = text.replace(matches[j], '<img class="emoji" src="images/emoji/' + emoji[matches[j]].file + '" />');
+        text = text.replace(matches[j], '<img class="emoji" src="' + base + 'images/emoji/' + emoji[matches[j]].file + '" />');
       }    
     }
     return text;
@@ -231,7 +235,7 @@ define([], function() {
         var span = document.createElement('span');
         span.id = 'chn-emoji-'+i;  
         var img = new Image();
-        img.src = "./images/"+emojiList[key]['file'];
+        img.src = global('baseUrl') + "images/"+emojiList[key]['file'];
         span.appendChild(img);
         this._changeColumn.appendChild(span);      
         break;
@@ -245,7 +249,7 @@ define([], function() {
       var span = document.createElement('span');
       span.id = 'chn-pinup-'+i;
       var img = new Image();
-      img.src = "./images/"+ pinupList[0];
+      img.src = global('baseUrl') + "images/"+ pinupList[0];
       span.appendChild(img);
       this._changeColumn.appendChild(span);    
     }

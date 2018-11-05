@@ -3,8 +3,8 @@ define([
   'util',
   'appUI',
   'emoji',
-  'global',
-  'jqueryContextMenu'
+  'global'
+  // 'jqueryContextMenu'
 ],function(
   YX,
   Util,
@@ -132,7 +132,7 @@ YX.fn.initEmoji = function() {
       pinupList: emoji.pinupList, //贴图
       width: 500,
       height: 300,
-      imgpath: './images/',
+      imgpath: global('baseUrl') + 'images/',
       callback: function(result) {
         that.cbShowEmoji(result);
       }
@@ -229,7 +229,7 @@ YX.fn.sendMessage = function(myOption) {
         options.content = myOption.content || '';
       }
       // 客户端反垃圾检查
-      var ret = nim.filterClientAntispam({
+      var ret = this.nim.filterClientAntispam({
         content: text
       });
 
@@ -287,14 +287,16 @@ YX.fn.sendMsgDone = function(error, msg) {
       .reset();
   }.bind(this))
 };
-
+// 换行 Enter 
+// 发送消息 Ctrl + Enter 
 YX.fn.inputMessage = function(e) {
   var ev = e || window.event;
   if ($.trim(this.$messageText.val()).length > 0) {
-    if (ev.keyCode === 13 && ev.ctrlKey) {
-      this.$messageText.val(this.$messageText.val() + '\r\n');
-    } else if (ev.keyCode === 13 && !ev.ctrlKey) {
+    if (ev.keyCode === 13 && !ev.ctrlKey) {
       this.sendTextMessage();
+    } else if (ev.keyCode === 13 && ev.ctrlKey) {
+      this.$messageText.val(this.$messageText.val() + '\r\n');
+      // this.sendTextMessage();
     }
   }
 };

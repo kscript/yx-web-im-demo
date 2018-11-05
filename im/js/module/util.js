@@ -10,7 +10,9 @@ define([
         emoji,
         global
     ) {
-
+function nim(){
+    return (global('yunXin') || {}).nim
+}
 // IE 11 polify
 if (!Object.assign) {
     Object.assign = function () {
@@ -172,7 +174,7 @@ function buildSessionMsg(msg) {
     switch (type) {
         case 'text':
             text += _$escape(msg.text);
-            text = emoji.buildEmoji(text);
+            text = emoji.buildEmoji(text, global('baseUrl'));
             break;
         case 'image':
             text += '[图片]';
@@ -241,7 +243,7 @@ function getMessage(msg) {
             str = _$escape(msg.text);
             str = str.replace(re, "<a href='$1' target='_blank'>$1</a>");
 
-            str = emoji.buildEmoji(str);
+            str = emoji.buildEmoji(str, global('baseUrl'));
             str = "<div class='f-maxWid'>" + str + "</div>"
             break;
         case 'image':
@@ -249,7 +251,7 @@ function getMessage(msg) {
                 str = '<p>[' + msg.message.message + ']</p>';
             } else {
                 if (url) {
-                    url = nim.viewImageSync({
+                    url = nim().viewImageSync({
                         url: url
                     })
                 }
@@ -272,7 +274,7 @@ function getMessage(msg) {
                     // })
                     // str = '<a class="f-maxWid" href="' + msg.file.url + '?imageView" target="_blank"><img data-src="' + msg.file.url + '" src="' + msg.file.url + '?imageView&thumbnail=200x0&quality=85"/></a>';
                     if (url) {
-                        url = nim.viewImageSync({
+                        url = nim().viewImageSync({
                             url: url
                         })
                     }
@@ -318,7 +320,7 @@ function getMessage(msg) {
             } else if (content.type === 3) {
                 var catalog = _$escape(content.data.catalog),
                     chartvar = _$escape(content.data.chartlet);
-                str = '<img class="chartlet" src="./images/' + catalog + '/' + chartvar + '.png">';
+                str = '<img class="chartlet" src="' + global('baseUrl') + 'images/' + catalog + '/' + chartvar + '.png">';
             } else if (content.type == 4) {
                 str = msg.fromNick + '发起了[白板互动]';
             } else if (content.type == 5) {
@@ -683,14 +685,15 @@ function loadImg() {
 }
 
 function getAvatar(url) {
+
     var re = /^((http|https|ftp):\/\/)?(\w(\:\w)?@)?([0-9a-z_-]+\.)*?([a-z0-9-]+\.[a-z]{2,6}(\.[a-z]{2})?(\:[0-9]{2,6})?)((\/[^?#<>\/\\*":]*)+(\?[^#]*)?(#.*)?)?$/i;
     if (re.test(url)) {
-        url = nim.viewImageSync({
+        url = nim().viewImageSync({
             url: url
         })
         return url + "?imageView&thumbnail=80x80&quality=85";
     } else {
-        return url || "images/default-icon.png"
+        return url || global('baseUrl') + "images/default-icon.png"
     }
 }
 
@@ -700,6 +703,9 @@ function getNick(account, cache) {
     var nick = cache.getFriendAlias(account), tmp = cache.getUserById(account);
     nick = nick || (tmp && tmp.nick ? tmp.nick : account)
     return nick;
+}
+function delStore(key){
+    localStorage.removeItem(key);
 }
 //拿所有消息中涉及到的账号（为了正确显示昵称=。=）
 function getAllAccount(obj) {
@@ -726,19 +732,35 @@ function getAllAccount(obj) {
 // 主要是考虑到im有很大可能会被嵌入到页面内
 // 当im作为嵌入组件时, 修改函数以控制它们的行为
 function setLogout(){
-    window.location.href = CONFIG.host + CONFIG.logoutLink;
+    var onLogout = global('onLogout');
+    if(onLogout && onLogout instanceof Function){
+        onLogout();
+    } else {
+        // window.location.href = CONFIG.host + CONFIG.logoutLink;
+    }
 }
-function setLogin(type){
-    if(type === 'kick'){
-        window.location.href = CONFIG.host + CONFIG.kickLink;
-    }else{
-        window.location.href = CONFIG.host + CONFIG.loginLink;
+function setLogin(type, message){
+    var onLogin = global('onLogin');
+    if(onLogin && onLogin instanceof Function){
+        onLogin(type, message);
+    } else {
+        // if(type === 'kick'){
+        //     window.location.href = CONFIG.host + CONFIG.kickLink;
+        // }else{
+        //     window.location.href = CONFIG.host + CONFIG.loginLink;
+        // }
     }
 }
 function setHome(){
-    window.location.href = CONFIG.host + CONFIG.homeLink;
+    var imHome = global('imHome');
+    if(imHome && imHome instanceof Function){
+        imHome();
+    } else {
+        // window.location.href = CONFIG.host + CONFIG.homeLink;
+    }
 }
 return {
+    delStore: delStore,
     setCookie: setCookie,
     readCookie: readCookie,
     delCookie: delCookie,

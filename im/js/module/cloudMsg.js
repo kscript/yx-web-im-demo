@@ -23,13 +23,17 @@ YX.fn.cloudMsg = function () {
 /**
  * 查看云记录
  */
-YX.fn.showCloudMsg = function () {
+YX.fn.showCloudMsg = function ($cloudMsg, event, isNative) {
+    if(!isNative) {
+        $('#rightPanel, #cloudMsgContainer').addClass('hide');
+        return;
+    }
     var that = this
     // this.$cloudMsgContainer.load('./cloudMsg.html', function() {
         that.$cloudMsgContainer.removeClass('hide');
         // 如果云记录显示的是与当前账号的记录, 那么什么都不必做
         if(that.$cloudMsgContainer.data("account") === this.crtSessionAccount){
-            return ;
+            // return ;
         } else {
             $("#cloudMsgList").html("");
         }
@@ -64,11 +68,12 @@ YX.fn.closeCloudMsgContainer = function () {
 /**
  * 加载更多云记录
  */
-YX.fn.loadMoreCloudMsg = function () {
+YX.fn.loadMoreCloudMsg = function (event, selector, tip) {
+    selector = selector || "#cloudMsgList";
     var that = this;
     var id = this.crtSessionAccount,
         scene = this.crtSessionType,
-        lastItem = $("#cloudMsgList .item").first(),
+        lastItem = $(".item", selector).first(),
         param ={
             scene:scene,
             to:id,
@@ -79,7 +84,7 @@ YX.fn.loadMoreCloudMsg = function () {
             reverse:false,
             done: function(error, obj, msgs){
                 // 添加一个 是否为加载更多 的参数
-                that.cbCloudMsg(error, obj, msgs, true);
+                that.cbCloudMsg(error, obj, msgs, true, selector, tip);
             }
         }
     this.mysdk.getHistoryMsgs(param)
@@ -90,34 +95,47 @@ YX.fn.loadMoreCloudMsg = function () {
  * @param  {boolean} error 
  * @param  {object} obj 云记录对象
  * @param  {boolean} isMore 点击 云记录 按钮
+ * 
+ * @param {string|jQuerySelector} selector 扩展参数1: 聊天记录容器
+ * @param {string|jQuerySelector} tip 扩展参数2: 加载更多标签
+ * @todo 扩展参数为可选项, 不传时, 不改变函数功能
  */
-YX.fn.cbCloudMsg = function (error, obj, msgs, isMore) {
-    var $node = $("#cloudMsgList"),
-        $tip = $("#cloudMsgContainer .u-status span");
+YX.fn.cbCloudMsg = function (error, obj, msgs, isMore, selector, tip) {
+    var isExpand = selector && tip;
+    selector = selector || "#cloudMsgList";
+    tip = tip || "#cloudMsgContainer .u-status span";
+    var $node = $(selector);
+    var $tip = $(tip);
+
+    var $scrollEl = isExpand ? $node : $node.parent();
+    var currentTop = $scrollEl.scrollTop();
+    var scrollHeight = getHeight();
+
     if (!error) {
         if (obj.msgs.length === 0) {
-            $tip.html('没有更早的聊天记录')
+            $tip.addClass('isComplete').html('没有更早的聊天记录');
         } else {
             if(obj.msgs.length<20){
-                 $tip.html('没有更早的聊天记录') 
+                 $tip.addClass('isComplete').html('没有更早的聊天记录') 
             }else{
-                 $tip.html('<a class="j-loadMore">加载更多记录</a>')
+                 $tip.removeClass('isComplete').html('<a class="j-loadMore">加载更多记录</a>')
             }
-            var currentTop = $node.scrollTop();
-            var scrollHeight = $node.height();
             var msgHtml = appUI.buildCloudMsgUI(obj.msgs,this.cache);
-
             if(isMore){
                 $(msgHtml).prependTo($node);
-                $node.parent().scrollTop($node.height() - scrollHeight + currentTop);
+                $scrollEl.scrollTop(getHeight() - scrollHeight + currentTop);
             } else {
                 $node.html(msgHtml);
-                $node.parent().scrollTop($node.height());
+                $scrollEl.scrollTop(getHeight());
             }
         }
     } else {
         console && console.error('获取历史消息失败')
         $tip.html('获取历史消息失败') 
+    }
+    // 云信聊天记录结构不一致, 使用扩展的方式时, 获取高度需要用scrollHeight (滚动容器在元素自身)
+    function getHeight(){
+        return isExpand ? $scrollEl.prop('scrollHeight') : $node.height();
     }
 }
 })

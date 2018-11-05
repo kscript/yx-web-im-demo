@@ -19,7 +19,7 @@ function SDKBridge(ctr, data) {
     appkey = global('appkey')
     that = this;
   if (!token) {
-    Util.setLogin();
+    Util.setLogin('error', 'token 不能为空');
     return;
   }
   //缓存需要获取的用户信息账号
@@ -29,7 +29,7 @@ function SDKBridge(ctr, data) {
   this.person[userUID] = true;
   this.controller = ctr;
   this.cache = data;
-  ctr.nim = this.nim = SDK.NIM.getInstance({
+  var myOptions = {
     //控制台日志，上线时应该关掉
     debug: false,
     _debug: true || {
@@ -71,6 +71,7 @@ function SDKBridge(ctr, data) {
     //个人信息
     onmyinfo: onMyInfo.bind(this),
     onupdatemyinfo: onMyInfo.bind(this),
+    onusers: onUsers.bind(this),
     //系统通知
     onsysmsg: onSysMsg.bind(this, 1),
     onofflinesysmsgs: onOfflineSysmsgs.bind(this),
@@ -88,7 +89,21 @@ function SDKBridge(ctr, data) {
     onsyncfriendaction: onSyncFriendAction.bind(this),
     // 监听订阅事件列表
     onpushevents: onPushEvents.bind(this)
-  });
+  }
+  // for(var key in myOptions){
+  //   if(myOptions[key] instanceof Function){
+  //     var func = myOptions[key];
+  //     myOptions[key] = (function(key, func){
+  //       return function(err, data){
+  //         console.log(key, arguments);
+  //         func(err, data);
+  //       }
+  //     })(key, func)
+  //   }
+  // }
+  // console.log(myOptions)
+
+  ctr.nim = this.nim = SDK.NIM.getInstance(myOptions);
   this.nim.on('wbNotifyHangup', onwbNotifyHangup)
   function onwbNotifyHangup() {
     console.log('未接听挂断')
@@ -123,16 +138,16 @@ function SDKBridge(ctr, data) {
   function onDisconnect(error) {
     // 此时说明 `SDK` 处于断开状态，开发者此时应该根据错误码提示相应的错误信息，并且跳转到登录页面
     var that = this;
-    console.log('连接断开');
+    console.log('连接断开', error);
     if (error) {
       switch (error.code) {
         // 账号或者密码错误, 请跳转到登录页面并提示错误
         case 302:
-          alert(error.message);
-          // Util.delCookie('uid');
-          // Util.delCookie('sdktoken');
-          // Util.delCookie('nickName');
-          Util.setLogin();
+          // alert(error.message);
+          Util.delStore('uid');
+          Util.delStore('sdktoken');
+          Util.delStore('nickName');
+          Util.setLogin('error', error.message);
           break;
         // 被踢, 请提示错误后跳转到登录页面
         case 'kicked':
@@ -145,17 +160,15 @@ function SDKBridge(ctr, data) {
             WindowsPhone: '手机版'
           };
           var str = error.from;
-          alert(
-            '你的帐号于' +
-              Util.dateFormat(+new Date(), 'HH:mm') +
-              '被' +
-              (map[str] || '其他端') +
-              '踢出下线，请确定帐号信息安全!'
-          );
-          // Util.delCookie('uid');
-          // Util.delCookie('sdktoken');
-          // Util.delCookie('nickName');
-          Util.setLogin('kick');
+
+          Util.delStore('uid');
+          Util.delStore('sdktoken');
+          Util.delStore('nickName');
+          Util.setLogin('kick', '你的帐号于' +
+          Util.dateFormat(+new Date(), 'HH:mm') +
+          '被' +
+          (map[str] || '其他端') +
+          '踢出下线，请确定帐号信息安全!');
           break;
         default:
           break;
@@ -190,6 +203,7 @@ function SDKBridge(ctr, data) {
   function onSessions(sessions) {
     // 过滤掉群消息
     var filterList = [];
+    var unread = 0;
     for(var index = 0; index < sessions.length; index++){
       sessions[index].scene === 'p2p' && filterList.push(sessions[index]);
     }
@@ -200,6 +214,9 @@ function SDKBridge(ctr, data) {
     this.cache.setSessions(this.nim.mergeSessions(old, sessions));
     for (var i = 0; i < sessions.length; i++) {
       if (sessions[i].scene === 'p2p') {
+        if(sessions[i].unread){
+          unread += sessions[i].unread;
+        }
         var tmpUser = sessions[i].to;
         // 如果会话列表不是好友，需要订阅关系
         if (!this.cache.isFriend(tmpUser)) {
@@ -220,6 +237,7 @@ function SDKBridge(ctr, data) {
         }
       }
     }
+    // this.unread = unread;
   }
 
   function onUpdatesession(session) {
@@ -268,7 +286,7 @@ function SDKBridge(ctr, data) {
   // };
   function onMsg(msg) {
     //涉及UI太多放到main.js里去处理了
-    console.log('收到------------tip');
+    // console.log('收到------------tip');
     this.controller.doMsg(msg);
   }
 
@@ -296,7 +314,6 @@ function SDKBridge(ctr, data) {
     var data = this.cache.getSysMsgs();
     var array = [];
     var offlineMsgs = [];
-    debugger
     for (var i = sysMsgs.length - 1; i >= 0; i--) {
       if (sysMsgs[i].category === 'team') {
         array.push(sysMsgs[i]);
@@ -361,7 +378,7 @@ function SDKBridge(ctr, data) {
   }
 
   function onCustomSysMsg(msg) {
-    console.log('收到------------自定义通知', msg);
+    // console.log('收到------------自定义通知', msg);
     //多端同步 正在输入自定义消息类型需要过滤
     var content = JSON.parse(msg.content);
     var id = content.id;
@@ -476,6 +493,12 @@ function SDKBridge(ctr, data) {
         break;
     }
   }
+
+  // 同步好友资料
+  function onUsers(users){
+    console.log(users);
+  }
+
 
   function onSyncMarkinBlacklist(param) {
     if (param.isAdd) {

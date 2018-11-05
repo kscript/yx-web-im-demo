@@ -2,12 +2,12 @@ requirejs.config({
   baseUrl: 'js/module',
   paths : {
     'main': 'main',
-    'global': 'global',
-    'jquery': 'jquery-1.11.3.min',
-    'jqueryContextMenu': 'jquery.contextMenu.min',
+    // 'jquery': 'jquery-1.11.3.min',
+    // 'jqueryContextMenu': 'jquery.contextMenu.min',
     'SDK': 'NIM_Web_SDK_v5.5.0',
     'config': 'config',
     'util' : 'util',
+    'global' : 'global',
     'base': 'base',
     'uiKit': 'uiKit',
     'YX': 'yx',
@@ -23,13 +23,13 @@ requirejs.config({
     'teamList': 'teamList',
     'kitUtil': 'kitUtil'
   }
-});
+})
 
 requirejs([
   'SDK',
   'config',
-  'util',
-  'global'
+  'global',
+  'util'
 ], function(){
   requirejs([
     'base'

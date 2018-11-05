@@ -41,6 +41,8 @@ define([
           scene = target.getAttribute("data-scene");
           cbClickList(account,scene);
           return;
+        } else if(target.tagName.toLowerCase() === "b"){
+          return ;
         }
         target = target.parentNode;
       }    
@@ -102,11 +104,11 @@ define([
                 '<div class="panel_text">',
                   '<p class="panel_multi-row">',
                     '<span class="panel_nick">' +info.nick + '</span>',
+                    info.unread ? '<span class="panel_count">' + info.unread + '</span>':'',
                     '<b class="panel_time">' + info.time + '</b>',
                   '</p>',
                   '<p class="panel_multi-row">',
                     '<span class="panel_lastMsg">' + infoText + '</span>',
-                    info.unread ? '<b class="panel_count">' + info.unread + '</b>':'',
                   '</p>',
                 '</div>',
               '</li>'].join("");

@@ -1,9 +1,11 @@
 define([
     'YX',
+    'global',
     'uiKit'
     ],
     function(
         YX,
+        global,
         NIMUIKit
     ) {
 /*
@@ -39,8 +41,13 @@ YX.fn.buildSessions = function(id) {
     }else{
         this.sessions.update(data)
     }
+    this.oldUnread = this.totalUnread;
     //导航上加未读示例  
     this.showUnread();
+    if(this.oldUnread !== this.totalUnread){
+        global('unreadUpdate') && global('unreadUpdate')(this.totalUnread);
+    }
+    
     this.doPoint();
     //已读回执处理
     this.markMsgRead(id)

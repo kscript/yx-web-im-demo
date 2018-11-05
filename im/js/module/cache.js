@@ -149,6 +149,19 @@ define([
     }
     return false;
   };
+  /**
+   * 删除指定会话
+   * @return {boolean} 是否删除成功
+   */
+  Cache.prototype.removeSession = function(id) {
+    for (var i = this.sessions.length - 1; i >= 0; i--) {
+      if (this.sessions[i].id === id) {
+        this.sessions.splice(i, 1);
+        return true;
+      }
+    }
+    return false;
+  };
 
   Cache.prototype.addMsgs = function(msgs) {
     var item, user;

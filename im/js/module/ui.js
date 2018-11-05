@@ -11,7 +11,7 @@ define([
      * 当前会话聊天面板UI
      */
     buildChatContentUI: function(id, cache) {
-      var msgHtml = '',
+      var msgHtml = '<div class="load-more"><a class="j-loadMore">获取更多消息</a></div>',
         msgs = cache.getMsgs(id);
       if (msgs.length === 0) {
         msgHtml =
@@ -31,6 +31,7 @@ define([
           }
           //消息时间显示
           if (i == 0) {
+            // msgHtml += '<a class="j-loadMore">加载更多记录</a>';
             msgHtml += this.makeTimeTag(Util.transTime(message.time));
           } else {
             if (message.time - msgs[i - 1].time > 5 * 60 * 1000) {
@@ -74,7 +75,86 @@ define([
       msgHtml += this.makeChatContent(msg, user);
       return msgHtml;
     },
-
+    randerCustomContent: function(message, content, user){
+      var avatar = user.avatar;
+      var from = message.from;
+      var showNick = from !== global('userUID');
+      var res = [];
+      var texts = [];
+      if(content.text){
+        content.text = content.text instanceof Array ? content.text : [content.text];
+        for(var t = 0; t < content.text.length; t++){
+          texts.push('<div class="content-text">' + content.text[t] + '</div>');
+        }
+      }
+      switch (content.type) {
+        case 5:
+          res = [
+            '<div data-time="' +
+              message.time +
+              '" data-id="' +
+              message.idClient +
+              '" id="' +
+              message.idClient +
+              '" data-idServer="' +
+              message.idServer +
+              '" class="item item-custom' +
+            '">',
+              '<img class="img j-img" src="' +
+              Util.getAvatar(avatar) +
+              '" data-account="' +
+              from +
+              '"/>',
+              '<div class="msg msg-text">',
+                '<div class="box">',
+                  '<span class="readMsg"><i></i>已读</span>',
+                  '<div class="cnt">',
+                    Util.getMessage(message),
+                  '</div>',
+                '</div>',
+              '</div>',
+            '</div>'
+          ]
+          break;
+        case 6:
+        case 7:
+          res = [
+            '<div data-time="' +
+              message.time +
+              '" data-id="' +
+              message.idClient +
+              '" id="' +
+              message.idClient +
+              '" data-idServer="' +
+              message.idServer +
+              '" class="item custom-pic-text item-' + Util.buildSender(message) + 
+            '">',
+              '<img class="img j-img" src="' +
+              Util.getAvatar(avatar) +
+              '" data-account="' +
+              from +
+              '"/>',
+              showNick ? '<p class="nick">' + Util.getNick(from) + '</p>' : '',
+              '<div class="msg msg-text">',
+                '<a class="link" href="' + content.link + '" target="_blank">',
+                '<div class="box">',
+                  '<span class="readMsg"><i></i>已读</span>',
+                  '<div class="cnt">',
+                  '<div class="media-box">',
+                    '<h4>' + content.title +'</h4>',
+                    '<img class="pic" src="' + content.pic + '">',
+                    texts.join(''),
+                    '</div>',
+                  '</div>',
+                '</div>',
+                '</a>',
+              '</div>',
+            '</div>'
+          ]
+        default: break;
+      }
+      return res.join('');
+    },
     /**
      * 通用消息内容UI
      */
@@ -114,7 +194,7 @@ define([
         var type = message.type,
           from = message.from,
           avatar = user.avatar,
-          showNick = message.scene === 'team' && from !== global('userUID'),
+          showNick = from !== global('userUID'), // message.scene === 'team' && from !== global('userUID'),
           msgHtml;
         if (type === 'tip') {
           msgHtml = [
@@ -149,33 +229,10 @@ define([
             }catch(e){
               console.log(e);
             }
+            content = content || {};
           }
           if(custom){
-            msgHtml = [
-              '<div data-time="' +
-              message.time +
-              '" data-id="' +
-              message.idClient +
-              '" id="' +
-              message.idClient +
-              '" data-idServer="' +
-              message.idServer +
-              '" class="item item-custom' +
-              '">',
-              '<img class="img j-img" src="' +
-              Util.getAvatar(avatar) +
-              '" data-account="' +
-              from +
-              '"/>',
-              '<div class="msg msg-text">',
-              '<div class="box">',
-              '<div class="cnt">',
-              Util.getMessage(message),
-              '</div>',
-              '</div>',
-              '</div>',
-              '</div>'
-            ].join('');
+            msgHtml = this.randerCustomContent(message, content, user);
           } else {
             msgHtml = [
               '<div data-time="' +
@@ -197,6 +254,7 @@ define([
               showNick ? '<p class="nick">' + Util.getNick(from) + '</p>' : '',
               '<div class="msg msg-text j-msg">',
               '<div class="box">',
+              '<span class="readMsg"><i></i>已读</span>',
               '<div class="cnt">',
               Util.getMessage(message),
               '</div>',
@@ -242,7 +300,6 @@ define([
             //   }
             // }
             msgHtml = msgHtml.concat([
-              '<span class="readMsg"><i></i>已读</span>',
               '</div>'
             ]);
             msgHtml = msgHtml.join('');
@@ -373,7 +430,7 @@ define([
           }
           html += [
             '<div class="item">',
-            '<img src="images/advanced.png">',
+            '<img src="' + global('baseUrl') + 'images/advanced.png">',
             '<div class="text">',
             '<p><span>' +
               (team ? team.name : item.to) +
@@ -432,10 +489,10 @@ define([
           var teamInfo = cache.getTeamById(to + '');
           if (teamInfo) {
             nick = teamInfo.name + '-->' + Util.getNick(from);
-            avatar = 'images/' + teamInfo.type + '.png';
+            avatar = global('baseUrl') + 'images/' + teamInfo.type + '.png';
           } else {
             nick = to + '-->' + Util.getNick(from);
-            avatar = 'images/normal.png';
+            avatar = global('baseUrl') + 'images/normal.png';
           }
         }
         html += [
@@ -456,7 +513,7 @@ define([
     },
     //聊天消息中的时间显示
     makeTimeTag: function(time) {
-      return '<p class="u-msgTime">- - - - -&nbsp;' + time + '&nbsp;- -- - -</p>';
+      return '<p class="u-msgTime">' + time + '</p>';
     },
     // 多人音视频列表
     buildmeetingMemberUI: function(data) {

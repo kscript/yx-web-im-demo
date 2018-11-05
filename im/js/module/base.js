@@ -11,10 +11,13 @@ requirejs([
   global
 ){
   'use strict';
+  global('baseUrl', localStorage.getItem("baseUrl"));
   global('userUID', localStorage.getItem("uid"));
   global('uid', localStorage.getItem("uid"));
   global('token', localStorage.getItem("token"));
   global('appkey', localStorage.getItem("appkey"));
+  $("#sessionsWrap .btn-chat1").html('<i class="icon icon-linkman"></i>最近联系人<i class="icon icon-down">')
+
   /**
    * 主要业务逻辑相关
    */
@@ -23,5 +26,6 @@ requirejs([
    * 实例化
    * @see module/base/js
    */
-  global('yunXin', new YX(userUID));
+  var yunXin = new YX(userUID);
+  global('yunXin', yunXin);
 })

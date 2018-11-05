@@ -11,6 +11,8 @@ define([
      * 当前会话聊天面板UI
      */
     buildChatContentUI: function(id, cache) {
+      var current = global('yunXin').crtSessionAccount;
+
       var msgHtml = '<div class="load-more"><a class="j-loadMore">获取更多消息</a></div>',
         msgs = cache.getMsgs(id);
       if (msgs.length === 0) {
@@ -20,6 +22,10 @@ define([
         for (var i = 0, l = msgs.length; i < l; ++i) {
           var message = msgs[i],
             user = cache.getUserById(message.from);
+            var type = {in: 'from', out: 'to'}[message.flow];
+            if(message[type] !== current){
+              continue;
+            }
           if (
             message.attach &&
             message.attach.netcallType !== undefined &&
@@ -48,10 +54,15 @@ define([
      * 更新当前会话聊天面板UI
      */
     updateChatContentUI: function(msg, cache) {
+      var current = global('yunXin').crtSessionAccount;
       var lastItem = $('#chatContent .item').last(),
         msgHtml = '',
         user = cache.getUserById(msg.from);
       var message = msg;
+      var type = {in: 'from', out: 'to'}[message.flow];
+      if(message[type] !== current){
+        return '';
+      }
       if (
         message.attach &&
         message.attach.netcallType !== undefined &&
@@ -76,6 +87,7 @@ define([
       return msgHtml;
     },
     randerCustomContent: function(message, content, user){
+
       var avatar = user.avatar;
       var from = message.from;
       var showNick = from !== global('userUID');
@@ -117,7 +129,6 @@ define([
           ]
           break;
         case 6:
-        case 7:
           res = [
             '<div data-time="' +
               message.time +
@@ -160,6 +171,10 @@ define([
      */
     makeChatContent: function(message, user) {
       var msgHtml;
+      // 如果不是当前聊天的账号
+      // if(message.to !== global('yunXin').crtSessionAccount){
+      //   return '';
+      // }
       //通知类消息
       if (
         message.attach &&
@@ -316,8 +331,14 @@ define([
       var msgHtml = '',
         len = msg.length,
         meessage;
+        
+      var current = global('yunXin').crtSessionAccount;
       for (var i = len - 1; i >= 0; --i) {
         message = msg[i];
+        var type = {in: 'from', out: 'to'}[message.flow];
+        if(message[type] !== current){
+          continue;
+        }
         if (i == len - 1) {
           msgHtml += this.makeTimeTag(Util.transTime(message.time));
         } else {

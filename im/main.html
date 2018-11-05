@@ -58,6 +58,10 @@
 					<div class="chat-editor box-sizing" id="chatEditor" data-disabled="1">
 						<div id="emojiTag" class="m-emojiTag"></div>
 						<a class="chat-btn u-emoji" id="showEmoji"></a>
+						<!--
+						<a class="chat-btn u-link" id="sendInfo"></a>
+						<a class="chat-btn u-black" id="addToBlack"></a>
+						-->
 						<span class="chat-btn msg-type hide" id="chooseFileBtn">
 							<a class="icon icon-file" data-type="file"></a>
 						</span>
@@ -154,10 +158,9 @@
 				var that = this;
 				that.state = 2;
 				requirejs([
-				// 'module_main',
-					'built'
+				'module_main'
+					// 'built'
 				], function(){
-					console.log(123);
 					that.loadComplete();
 				});
 			},
@@ -170,6 +173,18 @@
 						options && yx.nim.setOptions(options);
 						yx.nim.connect();
 					}
+				});
+			},
+			// isBlack: 为true时加入黑名单, 为false时移除黑名单
+			addToBlackList: function(account, isBlack, func){
+				var that = this;
+				that.exec(function(global){
+					global("yunXin").mysdk.markInBlacklist(account, isBlack, function(error, data){
+						if(!error){
+							data.isAdd && that.deleteSession(account);
+						}
+						func && func(error, data);
+					});
 				});
 			},
 			loadComplete: function(){
@@ -207,18 +222,10 @@
 				})
 				
 			},
-			
-			// 给im添加事件
-			addImEvent: function(){
-				this.state = 5;
-				var that = this;
-				that.exec(function(global){
-					// 会话列表删除会话
-					$("#sessions").on("click", '.panel_time', function(e){
+			deleteSession: function(to, scene){
+				scene = scene || 'p2p';
+				to && this.exec(function(global){
 						var yx = global("yunXin");
-						var data = $(this).parents('.panel_item').data();
-						var scene = data.scene;
-						var to = data.account;
 						// 删除本地会话记录
 						yx.deleteLocalSessions({
 							to: to,
@@ -236,6 +243,19 @@
 							sessions: yx.cache.getSessions(),
 							personSubscribes: yx.cache.getPersonSubscribes()
 						});
+				})
+			},
+			// 给im添加事件
+			addImEvent: function(){
+				this.state = 5;
+				var that = this;
+				that.exec(function(global){
+					// 会话列表删除会话
+					$("#sessions").on("click", '.panel_time', function(e){
+						var data = $(this).parents('.panel_item').data();
+						var scene = data.scene;
+						var to = data.account;
+						that.deleteSession(to, scene);
 						e.preventDefault();
 						e.stopPropagation();
 						return false;
@@ -271,11 +291,11 @@
 			 *  text: [
 			 * 	 "百度",
 			 *	 "111",
-				*	 "222"
-				*  ]
-				* }
-				* sendCustomMessage(to, content);
-				*/
+			 *	 "222"
+			 *  ]
+			 * }
+			 * sendCustomMessage(to, content);
+			 */
 			sendCustomMessage: function(to, content){
 				var that = this;
 				that.exec(function(global){
@@ -306,22 +326,44 @@
 
 		var myIm = new IM();
 		myIm.init();
-		loadIm(myIm);
-		myIm.show();
 
 		myIm.beforeComplete(function(on){
 			// 登录回调
 			on('onLogin', function(type, message){
 				console.log(type, message)
 			});
+			
 			on('onLogout', function(){
 			});
 
 			on('unreadUpdate', function(unread){
 				console.log(unread);
-			})
+			});
+
+			// 打开聊天窗口的回调
+			on('openChatBox', function(account, scene){
+				$("#sendInfo")[account === '' ? 'show' : 'hide']();
+			});
+
 		})
+
+
+
+		// 发送自定义消息
+		$("#chatEditor").on("click", '.u-link', function(){
+			// myIm.sendCustomMessage(to, content);
+		});
 		
+		// 加入黑名单
+		$("#chatEditor").on("click", '.u-black', function(){
+			var account = myIm.global('yunXin').crtSessionAccount;
+			myIm.addToBlackList(account, true, function(error, data){
+				!error && $("#rightPanel").addClass("hide");
+			})
+		});
+		
+
+
 		// 显示事件
 		$("#nim .j-btn-chat.btn-chat").on("click", function(){
 			var data = $(this).data();
@@ -338,34 +380,30 @@
 			myIm.hide();
 		});
 
+		loadIm(myIm);
+		myIm.show();
+
 		function loadIm(im){
 			im && loadConfig(function(){
 				im.loadImJs();
 			})
 		}
 		function loadConfig(func){
-			var host = 'https://kscript.github.io/yx-web-im-demo/im';
-			localStorage.setItem('host', host);
-			localStorage.setItem('baseUrl', '/');
-			localStorage.setItem('uid', 'kscript2018');
-			localStorage.setItem('appkey', '45c6af3c98409b18a84451215d0bdd6e');
-			localStorage.setItem('token', '0f2ce291c76ecfc032e3432142f06fac');
-			func && func()
-			// $.ajax({
-			// 	url:'http://localhost:3001/iminfo',
-			// 	type: 'POST',
-			// 	dataType: 'json',
-			// 	success: function(response){
-			// 		localStorage.setItem('baseUrl', '/');
-			// 		localStorage.setItem('uid', response.data.uid);
-			// 		localStorage.setItem('appkey', response.data.appkey);
-			// 		localStorage.setItem('token', response.data.token);
-			// 		func && func();
-			// 	},
-			// 	error: function(e){
-			// 		console.log(e);
-			// 	}
-			// });
+			$.ajax({
+					url:'http://localhost:3001/iminfo',
+					type: 'POST',
+					dataType: 'json',
+					success: function(response){
+						localStorage.setItem('baseUrl', '/');
+						localStorage.setItem('uid', response.data.uid);
+						localStorage.setItem('appkey', response.data.appkey);
+						localStorage.setItem('token', response.data.token);
+						func && func();
+					},
+					error: function(e){
+						console.log(e);
+					}
+				});
 		}
 	</script>
 </body>

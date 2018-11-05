@@ -417,9 +417,10 @@ var transTime2 = (function () {
 function buildSender(msg) {
     var sender = '';
     if (msg.from === msg.to) {
-        if(msg.type === 'custom'){
-            sender = 'custom';
-        } else if (msg.fromClientType === "Web") {
+        // if(msg.type === 'custom'){
+        //     sender = 'custom';
+        // } else 
+        if (msg.fromClientType === "Web") {
             sender = 'me';
         } else {
             sender = 'you';

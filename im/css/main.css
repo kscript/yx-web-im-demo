@@ -73,7 +73,10 @@
 #nim .bad-network {line-height: 38px; background-color: #fffeeb; width: 360px; margin: 0 auto; color: #f24c3d; font-size: 14px;}
 #nim .msg .cnt .emoji {width: 20px; height: 20px;margin: 0; vertical-align: middle; float: none;}
 #nim .m-devices{height: 40px; line-height: 40px; padding-left: 20px; background-color: #e5f4ff; border-bottom: 1px solid #ccc; cursor: pointer;}
-#nim .u-emoji{position: relative; top: 2px; left: auto; width: 30px; height: 30px; background: url(../images/icons.png) no-repeat center; background-position: 2px -187px;}
+#nim .u-emoji{position: relative; top: 2px; left: auto; width: 24px; height: 24px; cursor: pointer; background: url(../images/icon.png) no-repeat center; background-position: 0px -316px; background-size: 200%;}
+#nim .u-link{ width: 24px; height: 24px; cursor: pointer; background: url(../images/link.png); background-size: 100%; background-repeat: no-repeat; background-position: center; border-radius: 50%; color: #959ea6; opacity: .5; -moz-opacity: .5; -khtml-opacity: .5; filter: alpha(opacit=50); -webkit-filter: alpha(opacit=50); }
+#nim .u-black{width: 24px; height: 24px; cursor: pointer; background: url(../images/blacklist.png); background-size: inherit; background-repeat: no-repeat; background-position: center; border-radius: 50%; color: #959ea6;}
+
 #nim .devices-container {margin-left: 292px; height: 620px; background-color: #f5f5f5; position: absolute; width: 710px; top: 0; z-index: 7;}
 #nim .devices-container .content {position: relative; height: 100%; padding: 12px 20px; overflow: scroll;}
 #nim .devices-container .main{position: absolute; top: 68px; left: 192px; width: 326px; height: 400px;}
@@ -159,9 +162,10 @@
 #nim .m-panel .panel_text .panel_time:before { content: 'x'; background: #c7c7c7; border-radius: 50%; font-size: 12px; color: #ffffff; width: 14px; height: 14px; display: block; text-align: center; line-height: 13px;}
 #nim .m-panel .panel_text .panel_multi-row {height: 18px; line-height: 18px;margin-bottom: 4px;}
 #nim .m-panel .panel_text .panel_single-row {height: 40px; line-height: 40px; color: #3a4a59; width: 80%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
-#nim .m-panel .panel_text .panel_nick, .m-panel .panel_text .panel_lastMsg {display: inline-block; width: 60%; font-size: 14px; line-height: 20px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+#nim .m-panel .panel_text .panel_nick,
+#nim .m-panel .panel_text .panel_lastMsg {color: #8899a7;display: inline-block; width: auto; font-size: 14px; line-height: 20px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
 #nim .m-panel .panel_text .panel_nick {color: #3a4a59;}
-#nim .m-panel .panel_text .panel_lastMsg {color: #8899a7;}
+#nim .m-panel .panel_text .panel_status {color: #8899a7; font-size: 12px;display: inline-block; width: auto; line-height: 20px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
 #nim .m-panel .panel_text .panel_count {position: absolute; right: 18px; top: 0px; background-color: #f24c3d; display: inline-block; font-size: 12px; color: #fff; border-radius: 10px; text-align: center; padding: 0 5px; width: 20px; line-height: 18px;}
 #nim .m-panel .panel_team .panel_team-title {font-size: 14px; padding: 5px 10px; color: #a1aebc; background-color: #f5f7fa; border-bottom: 1px solid #eaeeef;}
 #nim .m-emoji-wrapper{position: absolute;border:1px solid #ccc;width: 450px; height: 264px; background-color: #fff; position: absolute; top: -320px; left: 39px; z-index: 100;}
@@ -220,7 +224,10 @@
 #nim .chat-content .item.item-you{ padding-left: 50px;}
 #nim .chat-content .item.item-me{ padding-right: 50px;}
 #nim .chat-content .item.item-custom{ text-align: center; }
-#nim .chat-content .item.item-custom img{ display: none; }
+#nim .chat-content .item.item-custom .j-img{ display: none; }
+
+#nim .chat-content .item.item-custom.custom-pic-text .j-img{ display: inline-block; *display: inline; _display: inline; zoom: 1;}
+
 #nim .chat-content .img{cursor: pointer; border-radius: 50%;}
 #nim .chat-mask{z-index: 5; background-color: #e5f4ff; width: 710px; height: 14px; position: absolute; bottom: 9px; opacity: 0.8; text-align: center; padding: 20px 0; font-size: 14px;}
 

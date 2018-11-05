@@ -31,7 +31,7 @@ function SDKBridge(ctr, data) {
   this.cache = data;
   var myOptions = {
     //控制台日志，上线时应该关掉
-    debug: false,
+    debug: true,
     _debug: true || {
       api: 'info',
       style: 'font-size:14px;color:blue;background-color:rgba(0,0,0,0.1)'
@@ -496,7 +496,7 @@ function SDKBridge(ctr, data) {
 
   // 同步好友资料
   function onUsers(users){
-    console.log(users);
+    this.cache.updatePersonlist(users);
   }
 
 
@@ -531,7 +531,7 @@ function SDKBridge(ctr, data) {
         this.cache.updatePersonSubscribe(msgEvent);
       }
       var ctr = this.controller;
-      ctr.buildFriends();
+      // ctr.buildFriends();
       ctr.buildSessions();
       if (/^p2p-/.test(ctr.crtSession)) {
         var account = ctr.crtSessionAccount;
@@ -548,7 +548,7 @@ function SDKBridge(ctr, data) {
           }
         }
       }
-      console.log('订阅事件', param.msgEvents);
+      // console.log('订阅事件', param.msgEvents);
     }
   }
 
@@ -590,11 +590,11 @@ SDKBridge.prototype.subscribeMultiPortEvent = function(accounts) {
     // 同步订阅事件，保证每次登录时会收到推送消息
     sync: true,
     done: function onSubscribeEvent(err, res) {
-      if (err) {
-        console.error('订阅好友事件失败', err);
-      } else {
-        console.info('订阅好友事件', res);
-      }
+      // if (err) {
+      //   console.error('订阅好友事件失败', err);
+      // } else {
+      //   console.info('订阅好友事件', res);
+      // }
     }
   });
 };

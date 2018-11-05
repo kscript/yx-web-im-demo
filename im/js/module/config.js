@@ -16,7 +16,7 @@ define([],
     url: '',
     chatroomList: '',
     chatroomAddr: '',
-    openSubscription: false
+    openSubscription: true
   }
 
   return CONFIG;

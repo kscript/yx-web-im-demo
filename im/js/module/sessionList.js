@@ -95,7 +95,7 @@ define([
           }
         }
         if (multiPortStatus !== '') {
-          var infoText = '[' + multiPortStatus + '] ' + info.text
+          var infoText = '[' + multiPortStatus + '] '; // + info.text
         } else {
           infoText = info.text
         }
@@ -105,10 +105,10 @@ define([
                   '<p class="panel_multi-row">',
                     '<span class="panel_nick">' +info.nick + '</span>',
                     info.unread ? '<span class="panel_count">' + info.unread + '</span>':'',
+                    '<span class="panel_status">' + infoText + '</span>',
                     '<b class="panel_time">' + info.time + '</b>',
                   '</p>',
                   '<p class="panel_multi-row">',
-                    '<span class="panel_lastMsg">' + infoText + '</span>',
                   '</p>',
                 '</div>',
               '</li>'].join("");

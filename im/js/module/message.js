@@ -292,9 +292,9 @@ YX.fn.sendMsgDone = function(error, msg) {
 YX.fn.inputMessage = function(e) {
   var ev = e || window.event;
   if ($.trim(this.$messageText.val()).length > 0) {
-    if (ev.keyCode === 13 && !ev.ctrlKey) {
+    if (ev.keyCode === 13 && ev.ctrlKey) {
       this.sendTextMessage();
-    } else if (ev.keyCode === 13 && ev.ctrlKey) {
+    } else if (ev.keyCode === 13) {
       this.$messageText.val(this.$messageText.val() + '\r\n');
       // this.sendTextMessage();
     }

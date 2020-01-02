@@ -203,7 +203,6 @@ function buildSessionMsg(msg) {
             break;
         case 'custom':
             try{
-
                 var content = JSON.parse(msg.content);
                 if (content.type === 1) {
                     text += '[猜拳]';
@@ -315,22 +314,24 @@ function getMessage(msg) {
             str = sentStr + '一条[地理位置]消息';
             break;
         case 'custom':
-            var content = JSON.parse(msg.content);
-            if (content.type === 1) {
-                str = sentStr + '一条[猜拳]消息,请到手机或电脑客户端查看';
-            } else if (content.type === 2) {
-                str = sentStr + '一条[阅后即焚]消息,请到手机或电脑客户端查看';
-            } else if (content.type === 3) {
-                var catalog = _$escape(content.data.catalog),
-                    chartvar = _$escape(content.data.chartlet);
-                str = '<img class="chartlet" src="' + global('baseUrl') + 'images/' + catalog + '/' + chartvar + '.png">';
-            } else if (content.type == 4) {
-                str = msg.fromNick + '发起了[白板互动]';
-            } else if (content.type == 5) {
-                str = content.text;
-            } else {
-                str = content.text || ''; //; sentStr + '一条[自定义]消息，请到手机或电脑客户端查看';
-            }
+            try{
+                var content = JSON.parse(msg.content);
+                if (content.type === 1) {
+                    str = sentStr + '一条[猜拳]消息,请到手机或电脑客户端查看';
+                } else if (content.type === 2) {
+                    str = sentStr + '一条[阅后即焚]消息,请到手机或电脑客户端查看';
+                } else if (content.type === 3) {
+                    var catalog = _$escape(content.data.catalog),
+                        chartvar = _$escape(content.data.chartlet);
+                    str = '<img class="chartlet" src="' + global('baseUrl') + 'images/' + catalog + '/' + chartvar + '.png">';
+                } else if (content.type == 4) {
+                    str = msg.fromNick + '发起了[白板互动]';
+                } else if (content.type == 5) {
+                    str = content.text;
+                } else {
+                    str = content.text || ''; //; sentStr + '一条[自定义]消息，请到手机或电脑客户端查看';
+                }
+            } catch(e) {}
             break;
         case 'robot':
             str = sentStr + '一条[机器人]消息,请到手机或电脑客户端查看';

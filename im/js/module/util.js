@@ -202,18 +202,21 @@ function buildSessionMsg(msg) {
             text = '[机器人消息]';
             break;
         case 'custom':
-            var content = JSON.parse(msg.content);
-            if (content.type === 1) {
-                text += '[猜拳]';
-            } else if (content.type === 2) {
-                text += '[阅后即焚]';
-            } else if (content.type === 3) {
-                text += '[贴图]';
-            } else if (content.type === 4) {
-                text += '[白板]';
-            } else {
-                text += content.text || '[自定义消息]';
-            }
+            try{
+
+                var content = JSON.parse(msg.content);
+                if (content.type === 1) {
+                    text += '[猜拳]';
+                } else if (content.type === 2) {
+                    text += '[阅后即焚]';
+                } else if (content.type === 3) {
+                    text += '[贴图]';
+                } else if (content.type === 4) {
+                    text += '[白板]';
+                } else {
+                    text += content.text || '[自定义消息]';
+                }
+            } catch(e) {}
             break;
         case 'notification':
             text = '[' + transNotification(msg) + ']';

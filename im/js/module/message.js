@@ -295,7 +295,7 @@ YX.fn.inputMessage = function(e) {
     if (ev.keyCode === 13 && ev.ctrlKey) {
       this.sendTextMessage();
     } else if (ev.keyCode === 13) {
-      this.$messageText.val(this.$messageText.val() + '\r\n');
+      // this.$messageText.val(this.$messageText.val() + '\r\n');
       // this.sendTextMessage();
     }
   }

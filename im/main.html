@@ -327,11 +327,23 @@
 		var myIm = new IM();
 		myIm.init();
 
-		myIm.beforeComplete(function(on){
+		myIm.beforeComplete(function(global){
+			var on = global
+			on('onSyncDone', function(){
+				var yx = global("yunXin");
+				if (!localStorage.getItem('im_welcome')) {
+				    localStorage.setItem('im_welcome', 1)
+				    yx.sendMessage({
+					to: 'ks2017',
+					text: '你好, 这是一个测试'
+				    })
+				}
+			});
 			// 登录回调
 			on('onLogin', function(type, message){
 				console.log(type, message)
 			});
+			
 			
 			on('onLogout', function(){
 			});

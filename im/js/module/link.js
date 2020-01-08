@@ -264,6 +264,7 @@ function SDKBridge(ctr, data) {
 
   function onSyncDone() {
     console.log('消息同步完成');
+    typeof global('onSyncDone') === 'function' && global('onSyncDone')();
     var ctr = this.controller;
     ctr.initInfo(this.person, this.team);
   }

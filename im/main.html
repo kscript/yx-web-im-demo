@@ -401,11 +401,14 @@
 				im.loadImJs();
 			})
 		}
+		function getStorage(key, value) {
+			return localStorage.get(key) !== null ? localStorage.get(key) : value;
+		}
 		function loadConfig(func){
-			localStorage.setItem('baseUrl', 'https://kscript.github.io/yx-web-im-demo/im/');
-			localStorage.setItem('uid', 'kscript2018');
-			localStorage.setItem('appkey', '45c6af3c98409b18a84451215d0bdd6e');
-			localStorage.setItem('token', '0f2ce291c76ecfc032e3432142f06fac');
+			localStorage.setItem('baseUrl', getStorage('baseUrl', 'https://kscript.github.io/yx-web-im-demo/im/'));
+			localStorage.setItem('uid', getStorage('uid', 'kscript2018'););
+			localStorage.setItem('appkey', getStorage('appkey', '45c6af3c98409b18a84451215d0bdd6e'));
+			localStorage.setItem('token', getStorage('token', '0f2ce291c76ecfc032e3432142f06fac'));
 			func && func();
 			// $.ajax({
 			// 	url:'http://localhost:3001/iminfo',

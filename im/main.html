@@ -402,7 +402,7 @@
 			})
 		}
 		function getStorage(key, value) {
-			return localStorage.getItem(key) !== null ? localStorage.get(key) : value;
+			return localStorage.getItem(key) !== null ? localStorage.getItem(key) : value;
 		}
 		function loadConfig(func){
 			localStorage.setItem('baseUrl', getStorage('baseUrl', 'https://kscript.github.io/yx-web-im-demo/im/'));
